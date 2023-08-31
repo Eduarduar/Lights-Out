@@ -1,0 +1,28 @@
+{
+    "es": {
+        "Titulo": "Luces Fuera",
+        "Idioma": "Español",
+        "MenuInicial": { "Titulo": "Luces Fuera", "Opcion1": "Empezar", "Opcion2": "Opciones", "Opcion3": "Salir" },
+        "Opciones": { "Titulo": "Opciones", "Opcion1": "Idioma", "Opcion2": "Volumen" },
+        "Niveles": {
+            "Titulo": "Luces Fuera - Niveles",
+            "Opcion1": "Nivel 1",
+            "Opcion2": "Nivel 2",
+            "Opcion3": "Nivel 3",
+            "opcion4": "Salir"
+        }
+    },
+    "en": {
+        "Titulo": "Lights Out",
+        "Idioma": "English",
+        "MenuInicial": { "Titulo": "Lights Out", "Opcion1": "Start", "Opcion2": "Options", "Opcion3": "Exit" },
+        "Opciones": { "Titulo": "Options", "Opcion1": "Language", "Opcion2": "Volume" },
+        "Niveles": {
+            "Titulo": "Lights Out - Levels",
+            "Opcion1": "Level 1",
+            "Opcion2": "Level 2",
+            "Opcion3": "Level 3",
+            "opcion4": "Exit"
+        }
+    }
+}
