@@ -1,12 +1,12 @@
 import pygame, sys, json
-from button import Button
+from assets.defaults.button import Button
 
 # Idioma ---------------------------------------------------------------------
 
 idioma = {}
 
 # Cargamos el archivo de idioma y evitaremos que los caracteres se vean mal
-with open("assets/idioma.json", encoding="utf-8") as f:
+with open("assets/lenguage/lenguage.json", encoding="utf-8") as f:
     idioma = json.load(f)
 
 # solo en desarrollo - para cambiar el idioma desde la consola
@@ -44,7 +44,7 @@ BG1 = pygame.transform.scale(pygame.image.load("assets/backgrounds/Background.pn
 BG2 = pygame.transform.scale(pygame.image.load("assets/backgrounds/Background2.png"), (1280, 720))
 
 def get_font(size): # Returns Press-Start-2P in the desired size
-    return pygame.font.Font("assets/font.ttf", size)
+    return pygame.font.Font("assets/fonts/font.ttf", size)
 
 def niveles(opIdioma):
     while True:
@@ -102,11 +102,11 @@ def options(opIdioma):
         txtPorcentaje = get_font(45).render(str(int(pygame.mixer.music.get_volume() * 100)) + "%", True, "White")
         SCREEN.blit(txtPorcentaje, (850, 450))
 
-        btnVolumen1 = Button(image=pygame.transform.scale(pygame.image.load("assets/Play Rect.png"), (75, 50)), pos=(1100, 450), text_input="↑", font=get_font(45), base_color="White", hovering_color="Green")
+        btnVolumen1 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (75, 50)), pos=(1100, 450), text_input="↑", font=get_font(45), base_color="White", hovering_color="Green")
         btnVolumen1.changeColor(OPTIONS_MOUSE_POS)
         btnVolumen1.update(SCREEN)
 
-        btnVolumen2 = Button(image=pygame.transform.scale(pygame.image.load("assets/Play Rect.png"), (75, 50)), pos=(1100, 500), text_input="↓", font=get_font(45), base_color="White", hovering_color="Green")
+        btnVolumen2 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (75, 50)), pos=(1100, 500), text_input="↓", font=get_font(45), base_color="White", hovering_color="Green")
         btnVolumen2.changeColor(OPTIONS_MOUSE_POS)
         btnVolumen2.update(SCREEN)
 
@@ -116,7 +116,7 @@ def options(opIdioma):
         txtIdiomas = get_font(45).render(idioma[opIdioma]["Opciones"]["Opcion1"], True, "White")
         SCREEN.blit(txtIdiomas, (100, 300))
 
-        btnIdioma1 = Button(image=pygame.transform.scale(pygame.image.load("assets/Play Rect.png"), (350, 100)), pos=(1000, 320), text_input=idioma[opIdioma]["Idioma"], font=get_font(45), base_color="White", hovering_color="Green")
+        btnIdioma1 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (350, 100)), pos=(1000, 320), text_input=idioma[opIdioma]["Idioma"], font=get_font(45), base_color="White", hovering_color="Green")
         btnIdioma1.changeColor(OPTIONS_MOUSE_POS)
         btnIdioma1.update(SCREEN)
 
@@ -152,9 +152,9 @@ def main_menu(opIdioma):
         MENU_TEXT = get_font(70).render(idioma[opIdioma]["Titulo"], True, "#97ffc6")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
-        PLAY_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/Play Rect.png"), (550, 100)), pos=(640, 250),  text_input=idioma[opIdioma]["MenuInicial"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
-        OPTIONS_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/Play Rect.png"), (620, 100)), pos=(640, 400), text_input=idioma[opIdioma]["MenuInicial"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
-        QUIT_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/Play Rect.png"), (400, 100)), pos=(640, 550), text_input=idioma[opIdioma]["MenuInicial"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
+        PLAY_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100)), pos=(640, 250),  text_input=idioma[opIdioma]["MenuInicial"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
+        OPTIONS_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (620, 100)), pos=(640, 400), text_input=idioma[opIdioma]["MenuInicial"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
+        QUIT_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (400, 100)), pos=(640, 550), text_input=idioma[opIdioma]["MenuInicial"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
@@ -174,9 +174,6 @@ def main_menu(opIdioma):
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de salir
                     pygame.quit() # si fue en el boton de salir, salimos del juego
                     sys.exit()
-        
-        
-
         pygame.display.update()
 
 main_menu(opIdioma)
