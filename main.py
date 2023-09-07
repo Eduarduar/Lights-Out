@@ -45,7 +45,7 @@ BG2 = pygame.transform.scale(pygame.image.load("assets/backgrounds/Background2.p
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/fonts/font.ttf", size)
 
-def niveles(opIdioma):
+def niveles(opIdioma): # pantalla de niveles
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         
@@ -95,15 +95,16 @@ def niveles(opIdioma):
                 if btnBack.checkForInput(PLAY_MOUSE_POS):
                     menuPrincipal(opIdioma)
                 if btnLvl1.checkForInput(PLAY_MOUSE_POS) and LvlDisponibles["lvl1"] == True:
-                    print("lvl1")
+                    pantallaLvl1(opIdioma)
                 if btnLvl2.checkForInput(PLAY_MOUSE_POS) and LvlDisponibles["lvl2"] == True:
-                    print("lvl2")
+                    pantallaLvl2(opIdioma)
                 if btnLvl3.checkForInput(PLAY_MOUSE_POS) and LvlDisponibles["lvl3"] == True:
-                    print("lvl3")
+                    pantallaLvl3(opIdioma)
 
         pygame.display.update()
     
-def opciones(opIdioma):
+
+def opciones(opIdioma): # pantalla de configuración del menu de inicio
     while True:
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -175,7 +176,10 @@ def opciones(opIdioma):
 
         pygame.display.update()
 
-def menuPrincipal(opIdioma):
+def opcionesJuego(opIdioma): # pantalla de opciones durante el juego
+    print("opciones del juego")
+
+def menuPrincipal(opIdioma): # pantalla del menu principal
     while True:
         SCREEN.blit(BG2, (0, 0))
 
@@ -208,7 +212,7 @@ def menuPrincipal(opIdioma):
                     sys.exit()
         pygame.display.update()
 
-def pantallaDeCarga(opIdioma):
+def pantallaDeCarga(opIdioma): # pantalla de carga entre 2 pantallas
     while True:
 
         # creamos un bucle for que repita el codigo de abajo 4 veces donde la variable i empieze en 1
@@ -239,7 +243,34 @@ def pantallaDeCarga(opIdioma):
 
 # niveles en desarrollo
 
-def pantallaLvl1():
+def pantallaLvl1(opIdioma): # pantalla del Nivel 1
+    while True:
+        SCREEN.fill("black")
+
+        PLAY_MOUSE_POS = pygame.mouse.get_pos() # obtenemos la posicion del mouse
+
+        MENU_TEXT = get_font(70).render(idioma[opIdioma]["Titulo"], True, "#97ffc6")
+
+        # imprimimos el boton de opciones
+        
+        btnOpciones = Button(image=pygame.transform.scale(pygame.image.load("assets/img/confg icon.png"), (50, 50)), pos=(1230,50), text_input="", font=get_font(75), base_color="White", hovering_color="Red")
+        btnOpciones.changeColor(PLAY_MOUSE_POS)
+        btnOpciones.update(SCREEN)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if btnOpciones.checkForInput(PLAY_MOUSE_POS):
+                    opcionesJuego(opIdioma)
+                    
+
+        pygame.display.update()
+        
+def pantallaLvl2(opIdioma): # pantalla del Nivel 2
     while True:
         SCREEN.fill("black")
 
@@ -252,20 +283,7 @@ def pantallaLvl1():
 
         pygame.display.update()
         
-def pantallaLvl2():
-    while True:
-        SCREEN.fill("black")
-
-        pygame.display.update()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        pygame.display.update()
-        
-def pantallaLvl2():
+def pantallaLvl3(opIdioma): # pantalla del Nivel 3
     while True:
         SCREEN.fill("black")
 
