@@ -22,11 +22,15 @@ with open("assets/lenguage/lenguage.json", encoding="utf-8") as f:
 
 # Musica ---------------------------------------------------------------------
 
-# cargaremos la musica de fondo
+# cargmos la musica de inicio que solo se reproducira una vez y despues reproducimos la musica que va estar en bucle
 pygame.mixer.pre_init(44100, -16, 2, 512) #el 44100 es el estandar de la musica, el -16 es el estandar de la calidad, el 2 es el estandar de los canales y el 512 es el tamaño del buffer
 pygame.mixer.init() #inicializamos el mixer
-pygame.mixer.music.load("assets/songs/blondes-whats-up.mp3") #cargamos la musica
-pygame.mixer.music.set_volume(0.8) # ponemos el volumen de la musica al 80%
+
+# quiero reproducir una canción en bucle pero quiero que un segundo antes de que se acabe la canción se vuelva a repetir esa misma canción
+pygame.mixer.music.load("assets/songs/Musica de tencion1.wav") #cargamos la musica
+pygame.mixer.music.set_volume(0.5) #le bajamos el volumen a la musica
+
+
 
 # juego ----------------------------------------------------------------------
 
@@ -231,7 +235,7 @@ def pantallaDeCarga(opIdioma): # pantalla de carga entre 2 pantallas
                 # despuesde 3 segundos cambiamos a la pantalla de menu principal
                 pygame.time.delay(300)
         
-        pygame.mixer.music.play(-1) # ponemos la musica en bucle
+        pygame.mixer.music.play(-1) #reproducimos la musica en bucle
         menuPrincipal(opIdioma)
 
         for event in pygame.event.get():
