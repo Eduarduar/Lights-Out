@@ -12,11 +12,25 @@
             "Opcion3": "Nivel 3",
             "opcion4": "Salir"
         },
-        "OptionesLvl": {
+        "OpcionesLvl": {
             "Titulo": "Opciones",
             "Reanudar": "Reanudar",
             "Reiniciar": "Reiniciar",
             "Salir": "Salir"
+        },
+        "Juego": {
+            "Medidor": "Medidor: ",
+            "Ganaste": "Ganaste!",
+            "Perdiste": "Perdiste!"
+        },
+        "Nivel1": {
+            "Titulo": "Nivel 1"
+        },
+        "Nivel2": {
+            "Titulo": "Nivel 2"
+        },
+        "Nivel3": {
+            "Titulo": "Nivel 3"
         }
     },
     "en": {
@@ -32,11 +46,25 @@
             "Opcion3": "Level 3",
             "opcion4": "Exit"
         },
-        "OptionesLvl": {
+        "OpcionesLvl": {
             "Titulo": "Options",
             "Reanudar": "Resume",
             "Reiniciar": "Restart",
             "Salir": "Exit"
+        },
+        "Juego": {
+            "Medidor": "Meter: ",
+            "Ganaste": "You Win!",
+            "Perdiste": "You Lose!"
+        },
+        "Nivel1": {
+            "Titulo": "Level 1"
+        },
+        "Nivel2": {
+            "Titulo": "Level 2"
+        },
+        "Nivel3": {
+            "Titulo": "Level 3"
         }
     }
 }

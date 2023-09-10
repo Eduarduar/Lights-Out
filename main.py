@@ -27,7 +27,7 @@ pygame.mixer.pre_init(44100, -16, 2, 512) #el 44100 es el estandar de la musica,
 pygame.mixer.init() #inicializamos el mixer
 
 # quiero reproducir una canción en bucle pero quiero que un segundo antes de que se acabe la canción se vuelva a repetir esa misma canción
-pygame.mixer.music.load("assets/songs/Musica de tencion1.wav") #cargamos la musica
+pygame.mixer.music.load("assets/songs/musica1.wav") #cargamos la musica
 pygame.mixer.music.set_volume(0.5) #le bajamos el volumen a la musica
 
 
@@ -45,6 +45,8 @@ pygame.display.set_caption(idioma[opIdioma]["MenuInicial"]["Titulo"])
 #cargamos la imagen de fondo y la escalamos
 BG1 = pygame.transform.scale(pygame.image.load("assets/backgrounds/Background.png"), (1280, 720))
 BG2 = pygame.transform.scale(pygame.image.load("assets/backgrounds/Background2.png"), (1280, 720))
+Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
+ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/fonts/font.ttf", size)
@@ -59,14 +61,11 @@ def niveles(opIdioma): # pantalla de niveles
         #limpiamos para la nueva pantalla
         SCREEN.fill("black")
 
-        #imprimimos el titulo de la pantalla
-        MENU_TEXT = get_font(100).render(idioma[opIdioma]["Niveles"]["Titulo"], True, "#b68f40")
-
         # creamos 3 botonos correspondientes a los niveles
-        
-        btnLvl1 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100)), pos=(640, 250),  text_input=idioma[opIdioma]["Niveles"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#f9c447")
-        btnLvl2 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100)), pos=(640, 400), text_input=idioma[opIdioma]["Niveles"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#f9c447")
-        btnLvl3 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100)), pos=(640, 550), text_input=idioma[opIdioma]["Niveles"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#f9c447")
+
+        btnLvl1 = Button(image=pygame.transform.scale(Caja, (550, 100)), pos=(640, 250),  text_input=idioma[opIdioma]["Niveles"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#f9c447")
+        btnLvl2 = Button(image=pygame.transform.scale(Caja, (550, 100)), pos=(640, 400), text_input=idioma[opIdioma]["Niveles"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#f9c447")
+        btnLvl3 = Button(image=pygame.transform.scale(Caja, (550, 100)), pos=(640, 550), text_input=idioma[opIdioma]["Niveles"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#f9c447")
 
         # imprimimos el boton de regresar
         
@@ -106,7 +105,6 @@ def niveles(opIdioma): # pantalla de niveles
                     pantallaLvl3(opIdioma)
 
         pygame.display.update()
-    
 
 def opciones(opIdioma): # pantalla de configuración del menu de inicio
     while True:
@@ -139,11 +137,11 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
         txtPorcentaje = get_font(45).render(str(int(pygame.mixer.music.get_volume() * 100)) + "%", True, "White")
         SCREEN.blit(txtPorcentaje, (850, 450))
 
-        btnVolumen1 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (75, 50)), pos=(1100, 450), text_input="↑", font=get_font(45), base_color="White", hovering_color="Green")
+        btnVolumen1 = Button(image=pygame.transform.scale(Caja, (75, 50)), pos=(1100, 450), text_input="↑", font=get_font(45), base_color="White", hovering_color="Green")
         btnVolumen1.changeColor(OPTIONS_MOUSE_POS)
         btnVolumen1.update(SCREEN)
 
-        btnVolumen2 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (75, 50)), pos=(1100, 500), text_input="↓", font=get_font(45), base_color="White", hovering_color="Green")
+        btnVolumen2 = Button(image=pygame.transform.scale(Caja, (75, 50)), pos=(1100, 500), text_input="↓", font=get_font(45), base_color="White", hovering_color="Green")
         btnVolumen2.changeColor(OPTIONS_MOUSE_POS)
         btnVolumen2.update(SCREEN)
 
@@ -153,7 +151,7 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
         txtIdiomas = get_font(45).render(idioma[opIdioma]["Opciones"]["Opcion1"], True, "White")
         SCREEN.blit(txtIdiomas, (100, 300))
 
-        btnIdioma1 = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (350, 100)), pos=(1000, 320), text_input=idioma[opIdioma]["Idioma"], font=get_font(45), base_color="White", hovering_color="Green")
+        btnIdioma1 = Button(image=pygame.transform.scale(Caja, (350, 100)), pos=(1000, 320), text_input=idioma[opIdioma]["Idioma"], font=get_font(45), base_color="White", hovering_color="Green")
         btnIdioma1.changeColor(OPTIONS_MOUSE_POS)
         btnIdioma1.update(SCREEN)
 
@@ -163,15 +161,20 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             if event.type == pygame.MOUSEBUTTONDOWN: # detectamos el click del mouse
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):  # detectamos si el click fue en el boton de regresar
                     menuPrincipal(opIdioma) # si fue en el boton de regresar, regresamos al menu principal
                 if btnVolumen1.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de subir volumen
+                    
                     if pygame.mixer.music.get_volume() < 1: # si el volumen es menor a 1, lo subimos
                         pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.01) # subimos el volumen
+                        
                 if btnVolumen2.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de bajar volumen
+
                     if pygame.mixer.music.get_volume() > 0: # si el volumen es mayor a 0, lo bajamos
                         pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() - 0.01) # bajamos el volumen
+
                 if btnIdioma1.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de cambiar idioma
                     if opIdioma == "es": # si el idioma es español, lo cambiamos a ingles
                         opIdioma = "en" 
@@ -181,7 +184,54 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
         pygame.display.update()
 
 def opcionesJuego(opIdioma): # pantalla de opciones durante el juego
-    print("opciones del juego")
+    while True:
+
+        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+
+        #cambiamos el titulo de la ventana
+        pygame.display.set_caption(f'{idioma[opIdioma]["OpcionesLvl"]["Titulo"]} - {idioma[opIdioma]["Nivel1"]["Titulo"]}')
+
+        # Caja de opciones
+        SCREEN.blit(pygame.transform.scale(Caja, (300, 400)), (490, 200))
+
+        # imprimimos el titulo de la pantalla encima de la caja
+        MENU_TEXT = get_font(75).render(idioma[opIdioma]["OpcionesLvl"]["Titulo"], True, "#b68f40")
+        MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
+        SCREEN.blit(MENU_TEXT, MENU_RECT)
+
+        letra = 40
+        if opIdioma == "es": 
+            letra = 32 
+
+        btnContinuar = Button(image=pygame.transform.scale(Caja, (300, 100)), pos=(640, 250),  text_input=idioma[opIdioma]["OpcionesLvl"]["Reanudar"], font=get_font(letra), base_color="#d7fcd4", hovering_color="#f9c447")
+        btnContinuar.changeColor(OPTIONS_MOUSE_POS)
+        btnContinuar.update(SCREEN)
+
+        btnReiniciar = Button(image=pygame.transform.scale(Caja, (300, 100)), pos=(640, 400), text_input=idioma[opIdioma]["OpcionesLvl"]["Reiniciar"], font=get_font(letra), base_color="#d7fcd4", hovering_color="#f9c447")
+        btnReiniciar.changeColor(OPTIONS_MOUSE_POS)
+        btnReiniciar.update(SCREEN)
+
+        btnSalir = Button(image=pygame.transform.scale(Caja, (300, 100)), pos=(640, 550), text_input=idioma[opIdioma]["OpcionesLvl"]["Salir"], font=get_font(letra), base_color="#d7fcd4", hovering_color="#f9c447")
+        btnSalir.changeColor(OPTIONS_MOUSE_POS)
+        btnSalir.update(SCREEN)
+
+        # detectamos los eventos ----------------------
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN: # detectamos el click del mouse
+                if btnContinuar.checkForInput(OPTIONS_MOUSE_POS): 
+                    pantallaLvl1(opIdioma) 
+                if btnReiniciar.checkForInput(OPTIONS_MOUSE_POS):
+                    pantallaLvl1(opIdioma)
+                if btnSalir.checkForInput(OPTIONS_MOUSE_POS):
+                    niveles(opIdioma)
+
+
+        pygame.display.update()
 
 def menuPrincipal(opIdioma): # pantalla del menu principal
     while True:
@@ -192,9 +242,9 @@ def menuPrincipal(opIdioma): # pantalla del menu principal
         MENU_TEXT = get_font(70).render(idioma[opIdioma]["Titulo"], True, "#97ffc6")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
-        PLAY_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100)), pos=(640, 250),  text_input=idioma[opIdioma]["MenuInicial"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
-        OPTIONS_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (620, 100)), pos=(640, 400), text_input=idioma[opIdioma]["MenuInicial"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
-        QUIT_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (400, 100)), pos=(640, 550), text_input=idioma[opIdioma]["MenuInicial"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
+        PLAY_BUTTON = Button(image=pygame.transform.scale(Caja, (550, 100)), pos=(640, 250),  text_input=idioma[opIdioma]["MenuInicial"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
+        OPTIONS_BUTTON = Button(image=pygame.transform.scale(Caja, (620, 100)), pos=(640, 400), text_input=idioma[opIdioma]["MenuInicial"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
+        QUIT_BUTTON = Button(image=pygame.transform.scale(Caja, (400, 100)), pos=(640, 550), text_input=idioma[opIdioma]["MenuInicial"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
@@ -253,11 +303,11 @@ def pantallaLvl1(opIdioma): # pantalla del Nivel 1
 
         PLAY_MOUSE_POS = pygame.mouse.get_pos() # obtenemos la posicion del mouse
 
-        MENU_TEXT = get_font(70).render(idioma[opIdioma]["Titulo"], True, "#97ffc6")
+        pygame.display.set_caption(idioma[opIdioma]["Niveles"]["Titulo"])
 
         # imprimimos el boton de opciones
         
-        btnOpciones = Button(image=pygame.transform.scale(pygame.image.load("assets/img/confg icon.png"), (50, 50)), pos=(1230,50), text_input="", font=get_font(75), base_color="White", hovering_color="Red")
+        btnOpciones = Button(image=pygame.transform.scale(ConfigIcon, (50, 50)), pos=(1230,50), text_input="", font=get_font(75), base_color="White", hovering_color="Red")
         btnOpciones.changeColor(PLAY_MOUSE_POS)
         btnOpciones.update(SCREEN)
 
@@ -270,6 +320,7 @@ def pantallaLvl1(opIdioma): # pantalla del Nivel 1
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if btnOpciones.checkForInput(PLAY_MOUSE_POS):
                     opcionesJuego(opIdioma)
+                
                     
 
         pygame.display.update()
