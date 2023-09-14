@@ -2,6 +2,7 @@ import pygame, sys, json, random
 from assets.defaults.button import Button
 
 reloj = pygame.time.Clock()
+volume = 0.5
 
 # Idioma ---------------------------------------------------------------------
 
@@ -9,6 +10,7 @@ idioma = {}
 # Cargamos el archivo de idioma y evitaremos que los caracteres se vean mal
 with open("assets/lenguage/lenguage.json", encoding="utf-8") as f:
     idioma = json.load(f)
+
 opIdioma = "es"
 
 # Variables ------------------------------------------------------------------
@@ -65,11 +67,10 @@ LvlCompletados = {
 # cargmos la musica de inicio que solo se reproducira una vez y despues reproducimos la musica que va estar en bucle
 pygame.mixer.pre_init(44100, -16, 2, 512) #el 44100 es el estandar de la musica, el -16 es el estandar de la calidad, el 2 es el estandar de los canales y el 512 es el tamaño del buffer
 pygame.mixer.init() #inicializamos el mixer
+pygame.mixer.music.set_volume(volume) #le bajamos el volumen a la musica
 
-# quiero reproducir una canción en bucle pero quiero que un segundo antes de que se acabe la canción se vuelva a repetir esa misma canción
-pygame.mixer.music.load("assets/songs/musica1.wav") #cargamos la musica
-pygame.mixer.music.set_volume(0.5) #le bajamos el volumen a la musica
 
+indiceMusic = 0
 
 
 # juego ----------------------------------------------------------------------
@@ -96,7 +97,20 @@ Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 10
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/fonts/font.ttf", size)
 
-def niveles(opIdioma): # pantalla de niveles
+def cambioDeMusica(reproduccion = -1): # funcion para cambiar la musica
+    global volume
+    pygame.mixer.music.load(f"assets/songs/musica{indiceMusic}.wav") #cargamos la musica
+    pygame.mixer.music.set_volume(volume) #le bajamos el volumen a la musica
+    pygame.mixer.music.play(reproduccion) #reproducimos la musica en bucle
+
+
+def niveles(): # pantalla de niveles
+    global opIdioma
+    global indiceMusic
+    if indiceMusic != 1:
+        indiceMusic = 1
+        cambioDeMusica(-1)
+
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
         
@@ -141,17 +155,24 @@ def niveles(opIdioma): # pantalla de niveles
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if btnBack.checkForInput(PLAY_MOUSE_POS):
-                    menuPrincipal(opIdioma)
+                    menuPrincipal()
                 if btnLvl1.checkForInput(PLAY_MOUSE_POS) and LvlDisponibles["lvl1"] == True:
-                    pantallaLvl1(opIdioma)
+                    pantallaLvl1()
                 if btnLvl2.checkForInput(PLAY_MOUSE_POS) and LvlDisponibles["lvl2"] == True:
-                    pantallaLvl2(opIdioma)
+                    pantallaLvl2()
                 if btnLvl3.checkForInput(PLAY_MOUSE_POS) and LvlDisponibles["lvl3"] == True:
-                    pantallaLvl3(opIdioma)
+                    pantallaLvl3()
 
         pygame.display.update()
 
-def opciones(opIdioma): # pantalla de configuración del menu de inicio
+def opciones(): # pantalla de configuración del menu de inicio
+    global opIdioma
+    global volume
+    global indiceMusic
+    if indiceMusic != 1:
+        indiceMusic = 1
+        cambioDeMusica(-1)
+
     while True:
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -209,16 +230,18 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
 
             if event.type == pygame.MOUSEBUTTONDOWN: # detectamos el click del mouse
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):  # detectamos si el click fue en el boton de regresar
-                    menuPrincipal(opIdioma) # si fue en el boton de regresar, regresamos al menu principal
+                    menuPrincipal() # si fue en el boton de regresar, regresamos al menu principal
                 if btnVolumen1.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de subir volumen
                     
-                    if pygame.mixer.music.get_volume()+0.01 < 1: # si el volumen es menor a 1, lo subimos
-                        pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.02) # subimos el volumen
+                    if volume+0.01 < 1: # si el volumen es menor a 1, lo subimos
+                        volume += 0.02
+                        pygame.mixer.music.set_volume(volume) # subimos el volumen
                         
                 if btnVolumen2.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de bajar volumen
 
-                    if pygame.mixer.music.get_volume() > 0: # si el volumen es mayor a 0, lo bajamos
-                        pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() - 0.01) # bajamos el volumen
+                    if volume > 0: # si el volumen es mayor a 0, lo bajamos
+                        volume -= 0.01
+                        pygame.mixer.music.set_volume(volume) # bajamos el volumen
 
                 if btnIdioma1.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de cambiar idioma
                     if opIdioma == "es": # si el idioma es español, lo cambiamos a ingles
@@ -228,7 +251,13 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
 
         pygame.display.update()
 
-def opcionesJuego(opIdioma): # pantalla de opciones durante el juego
+def opcionesJuego(): # pantalla de opciones durante el juego
+    global opIdioma
+    global volume
+    # bajamos el volumen de la musica
+    volume /= 4
+    pygame.mixer.music.set_volume(volume)
+
     while True:
 
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
@@ -269,18 +298,31 @@ def opcionesJuego(opIdioma): # pantalla de opciones durante el juego
 
             if event.type == pygame.MOUSEBUTTONDOWN: # detectamos el click del mouse
                 if btnContinuar.checkForInput(OPTIONS_MOUSE_POS): 
-                    pantallaLvl1(opIdioma) 
-                if btnReiniciar.checkForInput(OPTIONS_MOUSE_POS):
-                    pantallaLvl1(opIdioma)
-                if btnSalir.checkForInput(OPTIONS_MOUSE_POS):
-                    niveles(opIdioma)
+                    volume *= 4
+                    pygame.mixer.music.set_volume(volume)
+                    pantallaLvl1() 
+                if btnReiniciar.checkForInput(OPTIONS_MOUSE_POS): 
+                    volume *= 4
+                    pygame.mixer.music.set_volume(volume)
+                    pantallaLvl1()
+                if btnSalir.checkForInput(OPTIONS_MOUSE_POS): 
+                    volume *= 4
+                    pygame.mixer.music.set_volume(volume)
+                    niveles()
 
 
         pygame.display.update()
 
-def menuPrincipal(opIdioma): # pantalla del menu principal
+def menuPrincipal(): # pantalla del menu principal
+    global opIdioma
+    global indiceMusic
+    if indiceMusic != 1:
+        indiceMusic = 1
+        cambioDeMusica(-1)
+
+    pygame.display.set_caption(idioma[opIdioma]["MenuInicial"]["Titulo"])
+
     while True:
-        
         # hacemos que el fondo se mueva en bucle 
 
         ciudadPosX = elementosFondo["ciudad"]["posX"] % 1280
@@ -322,9 +364,9 @@ def menuPrincipal(opIdioma): # pantalla del menu principal
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN: # si el evento es un click del mouse
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de jugar
-                    niveles(opIdioma) # si fue en el boton de jugar, vamos a la pantalla de niveles
+                    niveles() # si fue en el boton de jugar, vamos a la pantalla de niveles
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de opciones
-                    opciones(opIdioma) # si fue en el boton de opciones, vamos a la pantalla de opciones
+                    opciones() # si fue en el boton de opciones, vamos a la pantalla de opciones
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de salir
                     pygame.quit() # si fue en el boton de salir, salimos del juego
                     sys.exit()
@@ -332,7 +374,8 @@ def menuPrincipal(opIdioma): # pantalla del menu principal
         pygame.display.update()
         reloj.tick(30)
 
-def pantallaDeCarga(opIdioma): # pantalla de carga entre 2 pantallas
+def pantallaDeCarga(): # pantalla de carga entre 2 pantallas
+    global opIdioma
     while True:
 
         # creamos un bucle for que repita el codigo de abajo 4 veces donde la variable i empieze en 1
@@ -351,8 +394,7 @@ def pantallaDeCarga(opIdioma): # pantalla de carga entre 2 pantallas
                 # despuesde 3 segundos cambiamos a la pantalla de menu principal
                 pygame.time.delay(300)
         
-        pygame.mixer.music.play(-1) #reproducimos la musica en bucle
-        menuPrincipal(opIdioma)
+        menuPrincipal()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -363,8 +405,14 @@ def pantallaDeCarga(opIdioma): # pantalla de carga entre 2 pantallas
 
 # niveles en desarrollo
 
-def pantallaLvl1(opIdioma): # pantalla del Nivel 1
+def pantallaLvl1(): # pantalla del Nivel 1
+    global opIdioma
+    global indiceMusic
     ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
+    if (indiceMusic != 2):
+        indiceMusic = 2
+        cambioDeMusica(-1)
+
     while True:
         SCREEN.fill("black")
 
@@ -386,13 +434,20 @@ def pantallaLvl1(opIdioma): # pantalla del Nivel 1
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if btnOpciones.checkForInput(PLAY_MOUSE_POS):
-                    opcionesJuego(opIdioma)
+                    opcionesJuego()
                 
                     
 
         pygame.display.update()
         
-def pantallaLvl2(opIdioma): # pantalla del Nivel 2
+def pantallaLvl2(): # pantalla del Nivel 2
+    global opIdioma
+    global indiceMusic
+    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
+    if (indiceMusic != 2):
+        indiceMusic = 2
+        cambioDeMusica(-1)
+
     while True:
         SCREEN.fill("black")
 
@@ -405,7 +460,14 @@ def pantallaLvl2(opIdioma): # pantalla del Nivel 2
 
         pygame.display.update()
         
-def pantallaLvl3(opIdioma): # pantalla del Nivel 3
+def pantallaLvl3(): # pantalla del Nivel 3
+    global opIdioma
+    global indiceMusic
+    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
+    if (indiceMusic != 2):
+        indiceMusic = 2
+        cambioDeMusica(-1)
+
     while True:
         SCREEN.fill("black")
 
@@ -417,6 +479,6 @@ def pantallaLvl3(opIdioma): # pantalla del Nivel 3
                 sys.exit()
 
         pygame.display.update()
-        
 
-pantallaDeCarga(opIdioma)
+
+pantallaDeCarga()
