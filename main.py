@@ -1,9 +1,33 @@
 import pygame, sys, json, random
 from assets.defaults.button import Button
 
+reloj = pygame.time.Clock()
+
 # Idioma ---------------------------------------------------------------------
 
 idioma = {}
+# Cargamos el archivo de idioma y evitaremos que los caracteres se vean mal
+with open("assets/lenguage/lenguage.json", encoding="utf-8") as f:
+    idioma = json.load(f)
+opIdioma = "es"
+
+# Variables ------------------------------------------------------------------
+
+elementosFondo = {
+    "Luna": {
+        "posX" : 1200,
+        "posY" : 50
+    },
+    "nube": {
+        "posX" : 0,
+        "posY" : 80
+    },
+    "ciudad": {
+        "posX" : -320,
+        "posY" : 0
+    }
+}
+
 LvlDisponibles = {
     "lvl1": True,
     "lvl2": False,
@@ -14,11 +38,27 @@ LvlCompletados = {
     "lvl2": False,
     "lvl3": False
 }
-opIdioma = "en"
 
-# Cargamos el archivo de idioma y evitaremos que los caracteres se vean mal
-with open("assets/lenguage/lenguage.json", encoding="utf-8") as f:
-    idioma = json.load(f)
+
+# nivel = {
+#     "personaje": {
+#         "pos": [0, 0],
+#         "sprite": 0,
+#         "direccion": 0,
+#         "accion": None
+#     },
+#     "posNPC": {
+#         "pos": [0, 0],
+#         "sprite": 0,
+#         "direccion": 0,
+#         "accion": None
+#     },
+#     "juego": {
+#         "medidor": 0,
+#         "tiempo": 0,
+#         "puntaje": 0,
+#     },
+# }
 
 # Musica ---------------------------------------------------------------------
 
@@ -38,15 +78,20 @@ pygame.mixer.music.set_volume(0.5) #le bajamos el volumen a la musica
 pygame.init()
 
 SCREEN = pygame.display.set_mode((1280, 720))
+
+# cargamos las imagenes de fondo
+
+ciudad = pygame.image.load("assets/backgrounds/ciudad.png").convert()
+luna = pygame.image.load("assets/backgrounds/luna.png")
+nube = pygame.image.load("assets/backgrounds/nube.png")
+azul = pygame.transform.scale(pygame.image.load("assets/backgrounds/azul.jpg").convert(), (1280, 720))
+
 #imprimimos el titulo de la ventana usando los recursos de idioma
 pygame.display.set_caption(idioma[opIdioma]["MenuInicial"]["Titulo"])
 
 
 #cargamos la imagen de fondo y la escalamos
-BG1 = pygame.transform.scale(pygame.image.load("assets/backgrounds/Background.png"), (1280, 720))
-BG2 = pygame.transform.scale(pygame.image.load("assets/backgrounds/Background2.png"), (1280, 720))
 Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
-ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/fonts/font.ttf", size)
@@ -59,7 +104,7 @@ def niveles(opIdioma): # pantalla de niveles
         pygame.display.set_caption(idioma[opIdioma]["Niveles"]["Titulo"])
 
         #limpiamos para la nueva pantalla
-        SCREEN.fill("black")
+        SCREEN.blit(azul, (0, 0))
 
         # creamos 3 botonos correspondientes a los niveles
 
@@ -114,7 +159,7 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
         pygame.display.set_caption(idioma[opIdioma]["Opciones"]["Titulo"])
 
         #limpiamos para la nueva pantalla
-        SCREEN.blit(BG1, (0, 0))
+        SCREEN.blit(azul, (0, 0))
 
         #generamos el titulo de la pantalla
         MENU_TEXT = get_font(100).render(idioma[opIdioma]["Opciones"]["Titulo"], True, "#b68f40")
@@ -167,8 +212,8 @@ def opciones(opIdioma): # pantalla de configuración del menu de inicio
                     menuPrincipal(opIdioma) # si fue en el boton de regresar, regresamos al menu principal
                 if btnVolumen1.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de subir volumen
                     
-                    if pygame.mixer.music.get_volume() < 1: # si el volumen es menor a 1, lo subimos
-                        pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.01) # subimos el volumen
+                    if pygame.mixer.music.get_volume()+0.01 < 1: # si el volumen es menor a 1, lo subimos
+                        pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.02) # subimos el volumen
                         
                 if btnVolumen2.checkForInput(OPTIONS_MOUSE_POS): # detectamos si el click fue en el boton de bajar volumen
 
@@ -235,7 +280,26 @@ def opcionesJuego(opIdioma): # pantalla de opciones durante el juego
 
 def menuPrincipal(opIdioma): # pantalla del menu principal
     while True:
-        SCREEN.blit(BG2, (0, 0))
+        
+        # hacemos que el fondo se mueva en bucle 
+
+        ciudadPosX = elementosFondo["ciudad"]["posX"] % 1280
+        SCREEN.blit(ciudad, (ciudadPosX - 1280 , elementosFondo["ciudad"]["posY"]))
+        if ciudadPosX < 1280:
+            SCREEN.blit(ciudad, (ciudadPosX, elementosFondo["ciudad"]["posY"]))
+        elementosFondo["ciudad"]["posX"] -= 2
+
+        lunaposX = (elementosFondo["Luna"]["posX"]) % 1280
+        SCREEN.blit(luna, (lunaposX, elementosFondo["Luna"]["posY"]))
+        if lunaposX < 1280:
+            SCREEN.blit(luna, (lunaposX - 1280, elementosFondo["Luna"]["posY"]))
+        elementosFondo["Luna"]["posX"] -= 0.5
+
+        nubeposX = (elementosFondo["nube"]["posX"]) % 1280
+        SCREEN.blit(nube, (nubeposX - 1280, elementosFondo["nube"]["posY"]))
+        if nubeposX < 1280:
+            SCREEN.blit(nube, (nubeposX, elementosFondo["nube"]["posY"]))
+        elementosFondo["nube"]["posX"] -= 1
 
         MENU_MOUSE_POS = pygame.mouse.get_pos() # obtenemos la posicion del mouse
 
@@ -264,7 +328,9 @@ def menuPrincipal(opIdioma): # pantalla del menu principal
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de salir
                     pygame.quit() # si fue en el boton de salir, salimos del juego
                     sys.exit()
+
         pygame.display.update()
+        reloj.tick(30)
 
 def pantallaDeCarga(opIdioma): # pantalla de carga entre 2 pantallas
     while True:
@@ -298,6 +364,7 @@ def pantallaDeCarga(opIdioma): # pantalla de carga entre 2 pantallas
 # niveles en desarrollo
 
 def pantallaLvl1(opIdioma): # pantalla del Nivel 1
+    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
     while True:
         SCREEN.fill("black")
 
