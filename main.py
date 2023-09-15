@@ -18,7 +18,7 @@ opIdioma = "es"
 elementosFondo = {
     "Luna": {
         "posX" : 1200,
-        "posY" : 50
+        "posY" : 30
     },
     "nube": {
         "posX" : 0,
