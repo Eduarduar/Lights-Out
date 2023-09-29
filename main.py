@@ -38,7 +38,7 @@ LvlsInfo = {
 def main():
     pygame.init()
     SCREEN = pygame.display.set_mode((1280, 720))
-    pygame.display.set_caption("Light Out")
+    pygame.display.set_caption("Lights Out")
 
     pantalla_de_carga(SCREEN, configJuego, LvlsInfo, elementosFondo)
 

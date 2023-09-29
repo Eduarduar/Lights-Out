@@ -45,9 +45,9 @@ def menu_principal(SCREEN , configJuego, LvlsInfo, elementosFondo):
         MENU_TEXT = get_font(70).render(idioma[configJuego["Idioma"]]["Titulo"], True, "#97ffc6")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
-        PLAY_BUTTON = Button(image=pygame.transform.scale(imgs["caja"], (550, 100)), pos=(640, 250),  text_input=idioma[configJuego["Idioma"]]["MenuInicial"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
-        OPTIONS_BUTTON = Button(image=pygame.transform.scale(imgs["caja"], (620, 100)), pos=(640, 400), text_input=idioma[configJuego["Idioma"]]["MenuInicial"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
-        QUIT_BUTTON = Button(image=pygame.transform.scale(imgs["caja"], (400, 100)), pos=(640, 550), text_input=idioma[configJuego["Idioma"]]["MenuInicial"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#97ffc6")
+        PLAY_BUTTON = Button(image=pygame.transform.scale(imgs["caja"], (550, 100)), pos=(640, 250),  text_input=idioma[configJuego["Idioma"]]["MenuInicial"]["Opcion1"], font=get_font(75), base_color="#d7fcd4", hovering_color="#48ba84")
+        OPTIONS_BUTTON = Button(image=pygame.transform.scale(imgs["caja"], (620, 100)), pos=(640, 400), text_input=idioma[configJuego["Idioma"]]["MenuInicial"]["Opcion2"], font=get_font(75), base_color="#d7fcd4", hovering_color="#3d91da")
+        QUIT_BUTTON = Button(image=pygame.transform.scale(imgs["caja"], (400, 100)), pos=(640, 550), text_input=idioma[configJuego["Idioma"]]["MenuInicial"]["Opcion3"], font=get_font(75), base_color="#d7fcd4", hovering_color="#d34a4a")
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 

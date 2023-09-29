@@ -29,13 +29,9 @@ def opciones(SCREEN , configJuego, LvlsInfo, elementosFondo):
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
         # Regresar ------------------------------------
-
         OPTIONS_BACK = Button(image=None, pos=(50,50), text_input="←", font=get_font(75), base_color="White", hovering_color="Red")
-        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-        OPTIONS_BACK.update(SCREEN)
 
         # Volumen --------------------------------------
-
         #generamos el texto de las opciones
         txtVolumen = get_font(45).render(idioma[configJuego["Idioma"]]["Opciones"]["Opcion2"], True, "White")
         SCREEN.blit(txtVolumen, (100, 450))
@@ -43,24 +39,19 @@ def opciones(SCREEN , configJuego, LvlsInfo, elementosFondo):
         #imprimimos el porcentaje del volumen actual
         txtPorcentaje = get_font(45).render(str(int(configJuego["Volumen"] * 100)) + "%", True, "White")
         SCREEN.blit(txtPorcentaje, (850, 450))
-
         btnVolumen1 = Button(image=pygame.transform.scale(imgs["caja"], (75, 50)), pos=(1100, 450), text_input="↑", font=get_font(45), base_color="White", hovering_color="Green")
-        btnVolumen1.changeColor(OPTIONS_MOUSE_POS)
-        btnVolumen1.update(SCREEN)
-
         btnVolumen2 = Button(image=pygame.transform.scale(imgs["caja"], (75, 50)), pos=(1100, 500), text_input="↓", font=get_font(45), base_color="White", hovering_color="Green")
-        btnVolumen2.changeColor(OPTIONS_MOUSE_POS)
-        btnVolumen2.update(SCREEN)
 
         # idioma --------------------------------------
 
         #generamos el texto de las opciones
         txtIdiomas = get_font(45).render(idioma[configJuego["Idioma"]]["Opciones"]["Opcion1"], True, "White")
         SCREEN.blit(txtIdiomas, (100, 300))
-
         btnIdioma1 = Button(image=pygame.transform.scale(imgs["caja"], (350, 100)), pos=(1000, 320), text_input=idioma[configJuego["Idioma"]]["Idioma"], font=get_font(45), base_color="White", hovering_color="Green")
-        btnIdioma1.changeColor(OPTIONS_MOUSE_POS)
-        btnIdioma1.update(SCREEN)
+
+        for button in [btnIdioma1, btnVolumen1, btnVolumen2, OPTIONS_BACK]: # recorremos los botones
+            button.changeColor(OPTIONS_MOUSE_POS) # cambiamos el color de los botones
+            button.update(SCREEN) # actualizamos los botones
 
         # detectamos los eventos ----------------------
 
