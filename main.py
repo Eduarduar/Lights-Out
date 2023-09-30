@@ -8,7 +8,7 @@ configJuego = {
 }
 
 elementosFondo = {
-    "Luna": {
+    "luna": {
         "posX" : 1200,
         "posY" : 30
     },

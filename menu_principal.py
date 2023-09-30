@@ -10,6 +10,13 @@ imgs = imgs_menu_principal()
 reloj = pygame.time.Clock()
 idioma = cargar_idioma()
 
+def mover_fondo(SCREEN, img, elemento, velocidad):
+    posX = (elemento["posX"] - velocidad) % 1280
+    SCREEN.blit(img, (posX - 1280, elemento["posY"]))
+    if posX < 1280:
+        SCREEN.blit(img, (posX, elemento["posY"]))
+    elemento["posX"] = posX
+
 def menu_principal(SCREEN , configJuego, LvlsInfo, elementosFondo):
     if configJuego["indiceMusic"] != 1:
         configJuego["indiceMusic"] = 1
@@ -22,23 +29,9 @@ def menu_principal(SCREEN , configJuego, LvlsInfo, elementosFondo):
     while True:
         # hacemos que el fondo se mueva en bucle 
 
-        ciudadPosX = elementosFondo["ciudad"]["posX"] % 1280
-        SCREEN.blit(imgs["ciudad"], (ciudadPosX - 1280 , elementosFondo["ciudad"]["posY"]))
-        if ciudadPosX < 1280:
-            SCREEN.blit(imgs["ciudad"], (ciudadPosX, elementosFondo["ciudad"]["posY"]))
-        elementosFondo["ciudad"]["posX"] -= 2
-
-        lunaposX = (elementosFondo["Luna"]["posX"]) % 1280
-        SCREEN.blit(imgs["luna"], (lunaposX, elementosFondo["Luna"]["posY"]))
-        if lunaposX < 1280:
-            SCREEN.blit(imgs["luna"], (lunaposX - 1280, elementosFondo["Luna"]["posY"]))
-        elementosFondo["Luna"]["posX"] -= 0.5
-
-        nubeposX = (elementosFondo["nube"]["posX"]) % 1280
-        SCREEN.blit(imgs["nube"], (nubeposX - 1280, elementosFondo["nube"]["posY"]))
-        if nubeposX < 1280:
-            SCREEN.blit(imgs["nube"], (nubeposX, elementosFondo["nube"]["posY"]))
-        elementosFondo["nube"]["posX"] -= 1
+        mover_fondo(SCREEN ,imgs["ciudad"] ,elementosFondo["ciudad"], 2)
+        mover_fondo(SCREEN ,imgs["luna"] ,elementosFondo["luna"], 0.5)
+        mover_fondo(SCREEN ,imgs["nube"] ,elementosFondo["nube"], 1)
 
         MENU_MOUSE_POS = pygame.mouse.get_pos() # obtenemos la posicion del mouse
 
@@ -62,8 +55,10 @@ def menu_principal(SCREEN , configJuego, LvlsInfo, elementosFondo):
             if event.type == pygame.MOUSEBUTTONDOWN: # si el evento es un click del mouse
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de jugar
                     SCREEN , configJuego, LvlsInfo, elementosFondo = niveles(SCREEN , configJuego, LvlsInfo, elementosFondo) # si fue en el boton de jugar, vamos a la pantalla de niveles
+                    pygame.display.set_caption(idioma[configJuego["Idioma"]]["MenuInicial"]["Titulo"])
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de opciones
                     SCREEN , configJuego, LvlsInfo, elementosFondo = opciones(SCREEN , configJuego, LvlsInfo, elementosFondo) # si fue en el boton de opciones, vamos a la pantalla de opciones
+                    pygame.display.set_caption(idioma[configJuego["Idioma"]]["MenuInicial"]["Titulo"])
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de salir
                     pygame.quit() # si fue en el boton de salir, salimos del juego
                     sys.exit()

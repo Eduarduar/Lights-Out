@@ -13,7 +13,7 @@
             "opcion4": "Salir"
         },
         "OpcionesLvl": {
-            "Titulo": "Opciones",
+            "Titulo": "Pausa",
             "Reanudar": "Reanudar",
             "Reiniciar": "Reiniciar",
             "Salir": "Salir"
@@ -21,7 +21,8 @@
         "Juego": {
             "Medidor": "Medidor: ",
             "Ganaste": "Ganaste!",
-            "Perdiste": "Perdiste!"
+            "Perdiste": "Perdiste!",
+            "Tiempo": "Tiempo: "
         },
         "Nivel1": {
             "Titulo": "Nivel 1"
@@ -47,7 +48,7 @@
             "opcion4": "Exit"
         },
         "OpcionesLvl": {
-            "Titulo": "Options",
+            "Titulo": "Pause",
             "Reanudar": "Resume",
             "Reiniciar": "Restart",
             "Salir": "Exit"
@@ -55,7 +56,8 @@
         "Juego": {
             "Medidor": "Meter: ",
             "Ganaste": "You Win!",
-            "Perdiste": "You Lose!"
+            "Perdiste": "You Lose!",
+            "Tiempo": "Time: "
         },
         "Nivel1": {
             "Titulo": "Level 1"
