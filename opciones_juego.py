@@ -15,9 +15,6 @@ def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
     #cambiamos el titulo de la ventana
     pygame.display.set_caption(f'{idioma[configJuego["Idioma"]]["OpcionesLvl"]["Titulo"]} - {idioma[configJuego["Idioma"]]["Nivel1"]["Titulo"]}')
 
-    # Caja de opciones
-    # SCREEN.blit(pygame.transform.scale(imgs["caja"], (300, 400)), (490, 200))
-
     # imprimimos el titulo de la pantalla encima de la caja
     MENU_TEXT = get_font(75).render(idioma[configJuego["Idioma"]]["OpcionesLvl"]["Titulo"], True, "#b68f40")
     MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
