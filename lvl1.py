@@ -146,6 +146,10 @@ def recarga(SCREEN, infoPersonaje, accion = "caminar"):
 
 def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
     global consumoTotal
+    global consumoPorSeg
+    global LimiteConsumo
+    global focos
+    global infoPersonaje
     global segundoAccion
     reinciar()
 
@@ -164,8 +168,6 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
     tiempoPasado = 0
 
     while True:
-            
-        reloj.tick(15) #fps
         
         segundero = time.localtime().tm_sec # optenemos el tiempo actual
 
@@ -189,8 +191,6 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
                     elif foco[1]["tiempoEncendido"] >= 30: # verificamos si el foco esta encendido por mas de 60 segundos
                         foco[1]["estado"] = 2
                         foco[1]["ultimoEstado"] = 2
-
-                print(f"{foco[0]}: {foco[1]['estado']} {foco[1]['tiempoEncendido']}")
 
         if segundoUltimoFoco + 5 <= tiempoPasado and focos["focosEncendidos"] != 5: # verificamos si pasaron 5 segundos desde que se fundio el ultimo foco
             segundoUltimoFoco = tiempoPasado # actualizamos el tiempo del ultimo foco encendido
@@ -223,13 +223,6 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
         # colocamos el fondo de la pantalla
         SCREEN.blit(imgs["fondo"], (0,0))
 
-        # pintamos los focos encendidos
-        for foco in focos["focosEstado"].items(): # recorremos los focos
-            if foco[1]["estado"] != 0 and foco[1]["estado"] != 4: # verificamos si el foco esta apagado
-                SCREEN.blit(imgs[f"bombilla{foco[1]['estado']}"], foco[1]["posicion"]) # colocamos el foco en pantalla
-            else:
-                SCREEN.blit(imgs[f"sombras"][f"sombra{foco[1]['numero']}"], (0, 0))
-
         # colocamos el tempo
         SCREEN.blit(tiempo, tiempoRect)
 
@@ -260,13 +253,30 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
             recarga(SCREEN, infoPersonaje, accion = "saltar")
 
         # Tecla Espacio
-        
+        elif keys[pygame.K_SPACE]:
+            for foco in focos["focosEstado"].items(): # recorremos los focos
+                if foco[1]["estado"] != 0 and foco[1]["estado"] != 4 and infoPersonaje["piso"] == foco[1]["piso"]: # verificamos si el foco esta apagado
+                    print(f"El foco {foco[1]['numero']} esta encendido")
+                    if infoPersonaje["PX"] >= foco[1]["apagadorX1"] - infoPersonaje["ancho"] and infoPersonaje["PX"] <= foco[1]["apagadorX2"] + infoPersonaje["ancho"]:
+                        foco[1]["anteriorEstado"] = foco[1]["estado"]
+                        foco[1]["estado"] = 0
+                        focos["focosEncendidos"] -= 1
+                        break
+
+            recarga(SCREEN, infoPersonaje)
 
         #personaje quieto
         else:
             infoPersonaje["cuentaPasos"] = 1
             infoPersonaje["quieto"] = True
             recarga(SCREEN, infoPersonaje)
+
+        # pintamos los focos encendidos
+        for foco in focos["focosEstado"].items(): # recorremos los focos
+            if foco[1]["estado"] != 0 and foco[1]["estado"] != 4: # verificamos si el foco esta apagado
+                SCREEN.blit(imgs[f"bombilla{foco[1]['estado']}"], foco[1]["posicion"]) # colocamos el foco en pantalla
+            else:
+                SCREEN.blit(imgs[f"sombras"][f"sombra{foco[1]['numero']}"], (0, 0))
 
         #colocamos la oscuridad en general
         SCREEN.blit(imgs["sombra_lvl1"], (0,0))
@@ -294,6 +304,12 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
                         reinciar()
                         tiempoPasado = 0
                         segundoAnterior = 0
+                        consumoTotal = 0
+                        consumoPorSeg = 0
+                        LimiteConsumo = 0
+                        focos = {}
+                        infoPersonaje = {}
+                        segundoAccion = 0
                         
         # recarga(SCREEN, infoPersonaje)
         pygame.display.update()
