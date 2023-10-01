@@ -2,10 +2,10 @@ import sys, pygame
 from assets.defaults.button import Button
 from assets.defaults.get_fonts import get_font
 from assets.defaults.idioma import cargar_idioma
-from assets.defaults.get_imgs import imgs_lvls
+from assets.defaults.get_imgs import imgs_lvl3
 
 idioma = cargar_idioma()
-imgs = imgs_lvls()
+imgs = imgs_lvl3()
 
 def pantalla_lvl3(SCREEN , configJuego, LvlsInfo, elementosFondo):
     if configJuego["indiceMusic"] != 2:

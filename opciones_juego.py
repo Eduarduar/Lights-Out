@@ -2,10 +2,10 @@ import sys, pygame
 from assets.defaults.button import Button
 from assets.defaults.get_fonts import get_font
 from assets.defaults.idioma import cargar_idioma
-from assets.defaults.get_imgs import imgs_lvls
+from assets.defaults.get_imgs import imgs_optionsLvls
 
 idioma = cargar_idioma()
-imgs = imgs_lvls()
+imgs = imgs_optionsLvls()
 
 def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
     configJuego["Volumen"] /= 4

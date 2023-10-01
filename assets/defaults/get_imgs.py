@@ -61,7 +61,7 @@ def imgs_niveles():
 
     return imgs
 
-def imgs_lvls():
+def imgs_lvl1():
     ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
     Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
     fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
@@ -70,18 +70,94 @@ def imgs_lvls():
     bombilla1 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla1.png")
     bombilla2 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla2.png")
     bombilla3 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla3.png")
-    oscuro = pygame.image.load("assets/img/oscuro.png")
+    sombra1 = pygame.image.load("assets/img/lvl1/sombra1.png")
+    sombra2 = pygame.image.load("assets/img/lvl1/sombra2.png")
+    sombra3 = pygame.image.load("assets/img/lvl1/sombra3.png")
+    sombra4 = pygame.image.load("assets/img/lvl1/sombra4.png")
+    sombra5 = pygame.image.load("assets/img/lvl1/sombra5.png")
+    
+    sombras = {
+        "sombra1": sombra1,
+        "sombra2": sombra2,
+        "sombra3": sombra3,
+        "sombra4": sombra4,
+        "sombra5": sombra5
+    }
 
     imgs = {
         "configIcon": ConfigIcon,
         "caja": Caja,
-        "oscuro": oscuro,
+        "fondo": fondo,
+        "sombra_lvl1": sombra_lvl1,
+        "bombilla0": bombilla0,
+        "bombilla1": bombilla1,
+        "bombilla2": bombilla2,
+        "bombilla3": bombilla3,
+        "sombras": sombras
+    }
+
+    return imgs
+
+def imgs_lvl2():
+    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
+    Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
+    fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
+    sombra_lvl1 = pygame.image.load("assets/img/lvl1/sombra_lvl1.png")
+    bombilla0 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla0.png")
+    bombilla1 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla1.png")
+    bombilla2 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla2.png")
+    bombilla3 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla3.png")
+
+    sombras = {
+
+    }
+
+    imgs = {
+        "configIcon": ConfigIcon,
+        "caja": Caja,
         "fondo": fondo,
         "sombra_lvl1": sombra_lvl1,
         "bombilla0": bombilla0,
         "bombilla1": bombilla1,
         "bombilla2": bombilla2,
         "bombilla3": bombilla3
+    }
+
+    return imgs
+
+def imgs_lvl3():
+    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
+    Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
+    fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
+    sombra_lvl1 = pygame.image.load("assets/img/lvl1/sombra_lvl1.png")
+    bombilla0 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla0.png")
+    bombilla1 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla1.png")
+    bombilla2 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla2.png")
+    bombilla3 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla3.png")
+    sombras = {
+
+    }
+
+    imgs = {
+        "configIcon": ConfigIcon,
+        "caja": Caja,
+        "fondo": fondo,
+        "sombra_lvl1": sombra_lvl1,
+        "bombilla0": bombilla0,
+        "bombilla1": bombilla1,
+        "bombilla2": bombilla2,
+        "bombilla3": bombilla3
+    }
+
+    return imgs
+
+def imgs_optionsLvls():
+    Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
+    oscuro = pygame.image.load("assets/img/oscuro.png")
+
+    imgs = {
+        "caja": Caja,
+        "oscuro": oscuro
     }
 
     return imgs
