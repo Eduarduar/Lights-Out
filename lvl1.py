@@ -25,9 +25,16 @@ def reinciar():
     global LimiteConsumo
     global focos
     global infoPersonaje
+    global segundoAccion
+    global bararMax
+    global color
         
+    
+    segundoAccion = 0
+    bararMax = 275
+    color = (0, 255, 0)
     consumoTotal = 0 # el consumo total de los focos
-    consumoPorSeg = 1 # 1 watt por segundo
+    consumoPorSeg = 2 # 2 watt por segundo
     LimiteConsumo = 360 # el limite son 350 watts 
     focos = {
         "focosFuncionales": 5,
@@ -116,6 +123,8 @@ izquierda = [
     pygame.image.load("assets/img/sprites/personajes/jugador/personaje6.png")]
 
 def recarga(SCREEN, infoPersonaje, accion = "caminar"):
+        
+        reloj.tick(10) # fps
 
         if accion == "caminar":
 
@@ -201,10 +210,10 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
                         foco[1]["estado"] = 2
                         foco[1]["ultimoEstado"] = 2                    
 
-        if segundoUltimoFoco + 5 <= tiempoPasado and focos["focosEncendidos"] != 5: # verificamos si pasaron 5 segundos desde que se fundio el ultimo foco
+        if segundoUltimoFoco + 5 <= tiempoPasado and focos["focosEncendidos"] != 5 - focos["focosFundidos"]: # verificamos si pasaron 5 segundos desde que se fundio el ultimo foco
             segundoUltimoFoco = tiempoPasado # actualizamos el tiempo del ultimo foco encendido
             numFoco = 0
-            while True:
+            while True: # buscamos un foco apagado
                 numFoco = random.randint(1, focos["focosTotales"]) # elegimos un foco al azar
                 if focos["focosEstado"][f"foco{numFoco}"]["estado"] == 0: # verificamos si el foco esta apagado
                     break
@@ -295,7 +304,28 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
 
         if consumoTotal >= LimiteConsumo:
             # mostramos una pantalla de game over o un mensaje de game over
-            print("Game Over")
+            pygame.image.save(SCREEN, "assets/img/pantalla.png")
+            ultimoFrame = pygame.image.load("assets/img/pantalla.png")
+            while True:
+                for event in pygame.event.get():
+                    # si preciona cualquier tecla retorna al menu principal
+                    if event.type == pygame.KEYDOWN:
+                        return SCREEN , configJuego, LvlsInfo, elementosFondo
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                SCREEN.blit(ultimoFrame, (0,0))
+                SCREEN.blit(imgs["oscuro"], (0,0))
+
+                TITULO_TEXT = get_font(100).render(idioma[configJuego["Idioma"]]["Juego"]["Perdiste"], True, "#a1040f")
+                TITULO_RECT = TITULO_TEXT.get_rect(center=(640, 200))
+                SCREEN.blit(TITULO_TEXT, TITULO_RECT)
+
+                Text_text = get_font(20).render(idioma[configJuego["Idioma"]]["Juego"]["Preciona"], True, "#ffffff")
+                Text_rect = Text_text.get_rect(center=(640, 500))
+                SCREEN.blit(Text_text, Text_rect)
+
+                pygame.display.flip()
 
         #colocamos el boton de pausa
         btnOpciones.update(SCREEN)
@@ -313,14 +343,15 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
                     if accion == "salir":
                         return SCREEN , configJuego, LvlsInfo, elementosFondo
                     elif accion == "reiniciar":
-                        tiempoPasado = 0
-                        segundoAnterior = 0
+                        focos = {}
                         consumoTotal = 0
+                        tiempoPasado = 0
+                        segundoAccion = 0
                         consumoPorSeg = 0
                         LimiteConsumo = 0
-                        focos = {}
                         infoPersonaje = {}
-                        segundoAccion = 0
+                        segundoAnterior = 0
+                        segundoUltimoFoco = 0
                         reinciar()
                         
         # recarga(SCREEN, infoPersonaje)
