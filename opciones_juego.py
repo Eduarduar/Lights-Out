@@ -23,8 +23,7 @@ def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
     while True:
 
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-
-
+        
         letra = 40
         if configJuego["Idioma"] == "es": 
             letra = 32 

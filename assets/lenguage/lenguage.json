@@ -22,7 +22,8 @@
             "Medidor": "Medidor: ",
             "Ganaste": "Ganaste!",
             "Perdiste": "Perdiste!",
-            "Tiempo": "Tiempo: "
+            "Tiempo": "Tiempo: ",
+            "Preciona": "Preciona cualquier tecla para continuar"
         },
         "Nivel1": {
             "Titulo": "Nivel 1"
@@ -57,7 +58,8 @@
             "Medidor": "Meter: ",
             "Ganaste": "You Win!",
             "Perdiste": "You Lose!",
-            "Tiempo": "Time: "
+            "Tiempo": "Time: ",
+            "Preciona": "Press any key to continue"
         },
         "Nivel1": {
             "Titulo": "Level 1"

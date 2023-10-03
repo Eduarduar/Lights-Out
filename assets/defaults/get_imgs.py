@@ -75,6 +75,7 @@ def imgs_lvl1():
     sombra3 = pygame.image.load("assets/img/lvl1/sombra3.png")
     sombra4 = pygame.image.load("assets/img/lvl1/sombra4.png")
     sombra5 = pygame.image.load("assets/img/lvl1/sombra5.png")
+    oscuro = pygame.image.load("assets/img/oscuro.png")
     
     sombras = {
         "sombra1": sombra1,
@@ -93,7 +94,8 @@ def imgs_lvl1():
         "bombilla1": bombilla1,
         "bombilla2": bombilla2,
         "bombilla3": bombilla3,
-        "sombras": sombras
+        "sombras": sombras,
+        "oscuro": oscuro
     }
 
     return imgs
