@@ -15,6 +15,8 @@ LimiteConsumo = 0
 focos = {}
 infoPersonaje = {}
 segundoAccion = 0
+bararMax = 275
+color = (0, 255, 0)
 
 def reinciar():
     
@@ -151,6 +153,7 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
     global focos
     global infoPersonaje
     global segundoAccion
+    global color
     reinciar()
 
     if configJuego["indiceMusic"] != 2:
@@ -178,11 +181,17 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
 
             for foco in focos["focosEstado"].items(): # recorremos los focos
                 if foco[1]["estado"] == 1 or foco[1]["estado"] == 2 or foco[1]["estado"] == 3: # verificamos si el foco esta encendido
-                    foco[1]["tiempoEncendido"] += 1 # si el foco esta encendido sumamos un segundo
+                    foco[1]["tiempoEncendido"] += 1 # si el foco esta encendido sumamos un segundo 
+                    if (consumoTotal > 120): # color amarillo
+                        color = (255, 255, 0)
+                    elif (consumoTotal > 240): # color rojo
+                        color = (255, 0, 0)
 
-                    if foco[1]["tiempoEncendido"] >= 60: # verificamos si el foco esta encendido por mas de 30 segundos
+                    if foco[1]["tiempoEncendido"] >= 70: # verificamos si el foco esta encendido por mas de 30 segundos
                         foco[1]["estado"] = 4
                         foco[1]["ultimoEstado"] = 4
+                        focos["focosFundidos"] += 1
+                        focos["focosEncendidos"] -= 1
 
                     elif foco[1]["tiempoEncendido"] >= 45: # verificamos si el foco esta encendido por mas de 45 segundos
                         foco[1]["estado"] = 3
@@ -190,7 +199,7 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
 
                     elif foco[1]["tiempoEncendido"] >= 30: # verificamos si el foco esta encendido por mas de 60 segundos
                         foco[1]["estado"] = 2
-                        foco[1]["ultimoEstado"] = 2
+                        foco[1]["ultimoEstado"] = 2                    
 
         if segundoUltimoFoco + 5 <= tiempoPasado and focos["focosEncendidos"] != 5: # verificamos si pasaron 5 segundos desde que se fundio el ultimo foco
             segundoUltimoFoco = tiempoPasado # actualizamos el tiempo del ultimo foco encendido
@@ -222,6 +231,9 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
     
         # colocamos el fondo de la pantalla
         SCREEN.blit(imgs["fondo"], (0,0))
+
+        # colocamos la barra de consumo
+        pygame.draw.rect(SCREEN, color, (1147, (509 - consumoTotal), 40, consumoTotal)) # dibujamos la barra de consumo
 
         # colocamos el tempo
         SCREEN.blit(tiempo, tiempoRect)
@@ -301,7 +313,6 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
                     if accion == "salir":
                         return SCREEN , configJuego, LvlsInfo, elementosFondo
                     elif accion == "reiniciar":
-                        reinciar()
                         tiempoPasado = 0
                         segundoAnterior = 0
                         consumoTotal = 0
@@ -310,14 +321,15 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
                         focos = {}
                         infoPersonaje = {}
                         segundoAccion = 0
+                        reinciar()
                         
         # recarga(SCREEN, infoPersonaje)
-        pygame.display.update()
-
-        # print(f"{idioma[configJuego['Idioma']]['Juego']['Tiempo']}{minutos}:{segundos} s")
+        pygame.display.flip()
+        # pygame.display.update()
 
 
         # ! Nota importante:
         # ? agregar sonidos a clicks, pasos, puertas, etc...
         # ? agregar una pantalla de game over
         # ? agregar una pantalla de ganaste
+        # ? agregar Powerups
