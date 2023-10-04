@@ -150,7 +150,7 @@ def pausaInicio(SCREEN, configJuego):
         SCREEN.blit(imgs["sombras"]["sombra3"], (0,0))
         SCREEN.blit(imgs["sombras"]["sombra4"], (0,0))
         SCREEN.blit(imgs["sombras"]["sombra5"], (0,0))
-        SCREEN.blit(imgs["oscuro"], (0,0))
+        SCREEN.blit(imgs["controles"], (0,0))
 
         # imprimimos texto de presionar cualquier tecla para continuar
 
@@ -341,7 +341,7 @@ def ganar(SCREEN, configJuego, LvlsInfo, elementosFondo):
         SCREEN.blit(ultimoFrame, (0,0))
         SCREEN.blit(imgs["oscuro"], (0,0))
 
-        TITULO_TEXT = get_font(100).render(idioma[configJuego["Idioma"]]["Juego"]["Ganaste"], True, "#a1040f")
+        TITULO_TEXT = get_font(100).render(idioma[configJuego["Idioma"]]["Juego"]["Ganaste"], True, "#70f4c1")
         TITULO_RECT = TITULO_TEXT.get_rect(center=(640, 200))
         SCREEN.blit(TITULO_TEXT, TITULO_RECT)
 
@@ -447,7 +447,7 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
             SCREEN , configJuego, LvlsInfo, elementosFondo = perder(SCREEN, configJuego, LvlsInfo, elementosFondo)
             return SCREEN , configJuego, LvlsInfo, elementosFondo
 
-        if relojF <= 90 and focos["focosFundidos"] < 5: # verificamos si el jugador gano
+        if relojF <= 0 and focos["focosFundidos"] < 5: # verificamos si el jugador gano
             SCREEN , configJuego, LvlsInfo, elementosFondo = ganar(SCREEN, configJuego, LvlsInfo, elementosFondo)
             return SCREEN , configJuego, LvlsInfo, elementosFondo
 
