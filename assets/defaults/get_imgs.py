@@ -62,7 +62,8 @@ def imgs_niveles():
     return imgs
 
 def imgs_lvl1():
-    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
+    reloj = pygame.transform.scale(pygame.image.load("assets/img/sprites/items/powerUps/reloj.png"), (30,40))
+    rayo = pygame.transform.scale(pygame.image.load("assets/img/sprites/items/powerUps/rayo.png"), (30,40))
     Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
     fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
     sombra_lvl1 = pygame.image.load("assets/img/lvl1/sombra_lvl1.png")
@@ -77,7 +78,7 @@ def imgs_lvl1():
     sombra5 = pygame.image.load("assets/img/lvl1/sombra5.png")
     controles = pygame.image.load("assets/img/controles.png")
     oscuro = pygame.image.load("assets/img/oscuro.png")
-    
+
     sombras = {
         "sombra1": sombra1,
         "sombra2": sombra2,
@@ -87,7 +88,6 @@ def imgs_lvl1():
     }
 
     imgs = {
-        "configIcon": ConfigIcon,
         "caja": Caja,
         "fondo": fondo,
         "sombra_lvl1": sombra_lvl1,
@@ -97,7 +97,11 @@ def imgs_lvl1():
         "bombilla3": bombilla3,
         "sombras": sombras,
         "oscuro": oscuro,
-        "controles": controles
+        "controles": controles,
+        "powerUps": {
+            "velocidad": rayo,
+            "reducirConsumo": reloj
+        }
     }
 
     return imgs
