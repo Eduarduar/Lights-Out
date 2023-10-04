@@ -21,6 +21,8 @@ tiempoPasado = 0
 barraMax = 0
 focos = {}
 color = ()
+fps = 0
+powerUps = {}
 
 quietoD = pygame.image.load("assets/img/sprites/personajes/jugador/personaje1.png")
 quietoI = pygame.image.load("assets/img/sprites/personajes/jugador/personaje4.png")
@@ -46,9 +48,11 @@ def reinciar():
     global infoPersonaje
     global segundoAccion
     global tiempoPasado
+    global powerUps
     global barraMax
     global focos
     global color
+    global fps
         
     
     segundoUltimoFoco = 0
@@ -60,6 +64,32 @@ def reinciar():
     consumoTotal = 0 # el consumo total de los focos
     tiempoPasado = 0
     barraMax = 275
+    fps = 10
+    powerUps = {
+        "powerUpsActivos": 0,
+        "powerUpsTotales": 0,
+        "probabilidad": 15,
+        "estados": { 
+            "reducirConsumo": {
+                "nombre": "reducirConsumo",
+                "PX": 0,
+                "piso": 0,
+                "activo": False,
+                "suelto": False,
+                "tiempo": 10,
+                "alto": 40
+            },
+            "Velocidad": {
+                "nombre": "velocidad",
+                "PX": 0,
+                "piso": 0,
+                "activo": False,
+                "suelto": False,
+                "tiempo": 10,
+                "alto": 40
+            }
+        }
+    }
     focos = {
         "focosFuncionales": 5,
         "focosEncendidos": 0,
@@ -122,15 +152,64 @@ def reinciar():
     infoPersonaje = {
         "Y": 0,
         "X": 0,
-        "PX": 200,
+        "PX": 980,
         "PY": 530,
         "ancho": 50,
         "velocidad": 10,
-        "direccion": "derecha",
+        "direccion": "izquierda",
         "cuentaPasos": 0,
         "quieto": True,
         "piso": 1
     }
+
+# cuando se apague un foco habra una pequeña posibilidad de soltar un powerup
+def soltarPowerUp():
+    global powerUps
+    soltarPowerUp = random.randint(1, 100)
+    if soltarPowerUp <= powerUps["probabilidad"]:
+        soltarPowerUp = random.randint(1, 100)
+        if soltarPowerUp <= 50:
+            powerUps["estados"]["reducirConsumo"]["PX"] = random.randint(200, 1000)
+            powerUps["estados"]["reducirConsumo"]["piso"] = random.randint(1, 2)
+            powerUps["estados"]["reducirConsumo"]["activo"] = False
+            powerUps["estados"]["reducirConsumo"]["suelto"] = True
+            powerUps["estados"]["reducirConsumo"]["tiempo"] = 10
+        else:
+            powerUps["estados"]["Velocidad"]["PX"] = random.randint(200, 1000)
+            powerUps["estados"]["Velocidad"]["piso"] = random.randint(1, 2)
+            powerUps["estados"]["Velocidad"]["activo"] = False
+            powerUps["estados"]["Velocidad"]["suelto"] = True
+            powerUps["estados"]["Velocidad"]["tiempo"] = 10
+
+# funcion que controla los powerUps y los coloca en pantalla
+def pintarPowerUps(SCREEN, segundero):
+    global powerUps
+    global infoPersonaje
+    global segundoAnterior
+    for powerUp in powerUps["estados"].items():
+        if powerUp[1]["suelto"] == True:
+            if powerUp[1]["activo"] == False:
+                # verificamos si el personaje toco el powerUp
+                if infoPersonaje["PX"] >= powerUp[1]["PX"] - infoPersonaje["ancho"] and infoPersonaje["PX"] <= powerUp[1]["PX"] + 40:
+                    if infoPersonaje["piso"] == powerUp[1]["piso"]:
+                        powerUp[1]["activo"] = True
+                        powerUp[1]["suelto"] = False
+                        powerUps["powerUpsActivos"] += 1
+                        print("powerUp activado")
+                elif powerUp[1]["piso"] == 1:
+                    SCREEN.blit(imgs["powerUps"][powerUp[1]["nombre"]], (powerUp[1]["PX"], 530 + powerUp[1]["alto"]))
+                else:
+                    SCREEN.blit(imgs["powerUps"][powerUp[1]["nombre"]], (powerUp[1]["PX"], 350 + powerUp[1]["alto"]))
+                print(powerUp[1]["tiempo"])
+        else:  
+            if powerUp[1]["activo"] == True:
+                if segundero != segundoAnterior: # verificamos si el tiempo cambio 
+                    powerUp[1]["tiempo"] -= 1 # si el tiempo cambio restamos un segundo
+                    if powerUp[1]["tiempo"] <= 0: # verificamos si el powerUp se acabo
+                        powerUp[1]["tiempo"] = 10
+                        powerUp[1]["activo"] = False
+                        powerUp[1]["suelto"] = False
+                        powerUps["powerUpsActivos"] -= 1
 
 # funcion para mostrar una pantalla de pausa antes de iniciar
 def pausaInicio(SCREEN, configJuego):
@@ -164,8 +243,12 @@ def pausaInicio(SCREEN, configJuego):
 # funcion para pintar al personaje
 def pintarPersonaje(SCREEN, accion = "caminar"):
         global infoPersonaje
-        
-        reloj.tick(10) # fps
+        global fps
+        if powerUps["estados"]["Velocidad"]["activo"] == True: # verificamos si el powerUp de velocidad esta activo
+            fps = 20 # aumentamos los fps
+        else:
+            fps = 10 # reiniciamos los fps
+        reloj.tick(fps) # fps
 
         if accion == "caminar":
 
@@ -235,6 +318,7 @@ def moverPersonaje(SCREEN):
                         foco[1]["anteriorEstado"] = foco[1]["estado"]
                         foco[1]["estado"] = 0
                         focos["focosEncendidos"] -= 1
+                        soltarPowerUp()
                         break
             pintarPersonaje(SCREEN, accion="apagar")
 
@@ -251,11 +335,15 @@ def pintarFocos(SCREEN, segundero):
     global consumoPorSeg
     global consumoTotal
     global tiempoPasado
+    global powerUps
     global focos
     global color
     if segundero != segundoAnterior: # verificamos si el tiempo cambio 
             tiempoPasado += 1 # si el tiempo cambio sumamos un segundo
-            consumoTotal += consumoPorSeg * focos["focosEncendidos"] # sumamos el consumo de los focos encendidos
+            if powerUps["estados"]["reducirConsumo"]["activo"] == True: # verificamos si el powerUp de reducir consumo esta activo
+                consumoTotal += (consumoPorSeg / 2) * focos["focosEncendidos"] # reducimos a la mitad el consumo de los focos encendidos
+            else:
+                consumoTotal += consumoPorSeg * focos["focosEncendidos"] # sumamos el consumo de los focos encendidos
             segundoAnterior = segundero # actualizamos el tiempo anterior
 
             for foco in focos["focosEstado"].items(): # recorremos los focos
@@ -436,6 +524,8 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
         pygame.draw.rect(SCREEN, color, (1147, (509 - consumoTotal), 40, consumoTotal)) # dibujamos la barra de consumo
 
         pintarFocos(SCREEN, segundero) # actualizamos los estados de los focos
+
+        pintarPowerUps(SCREEN, segundero) # actualizamos los estados de los powerUps
 
         moverPersonaje(SCREEN) # movemos al personaje
 
