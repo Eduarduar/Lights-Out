@@ -190,12 +190,11 @@ def pintarPowerUps(SCREEN, segundero):
         if powerUp[1]["suelto"] == True:
             if powerUp[1]["activo"] == False:
                 # verificamos si el personaje toco el powerUp
-                if infoPersonaje["PX"] >= powerUp[1]["PX"] - infoPersonaje["ancho"] and infoPersonaje["PX"] <= powerUp[1]["PX"] + 40:
-                    if infoPersonaje["piso"] == powerUp[1]["piso"]:
-                        powerUp[1]["activo"] = True
-                        powerUp[1]["suelto"] = False
-                        powerUps["powerUpsActivos"] += 1
-                        print("powerUp activado")
+                if (infoPersonaje["PX"] >= powerUp[1]["PX"] - infoPersonaje["ancho"] and infoPersonaje["PX"] <= powerUp[1]["PX"] + 40) and (infoPersonaje["piso"] == powerUp[1]["piso"]):
+                    powerUp[1]["activo"] = True
+                    powerUp[1]["suelto"] = False
+                    powerUps["powerUpsActivos"] += 1
+                    print("powerUp activado")
                 elif powerUp[1]["piso"] == 1:
                     SCREEN.blit(imgs["powerUps"][powerUp[1]["nombre"]], (powerUp[1]["PX"], 530 + powerUp[1]["alto"]))
                 else:
