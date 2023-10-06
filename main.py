@@ -1,5 +1,5 @@
 import pygame
-from carga import pantalla_de_carga
+from menu_principal import menu_principal
 
 configJuego = {
     "Idioma": "es",
@@ -40,7 +40,7 @@ def main():
     SCREEN = pygame.display.set_mode((1280, 720))
     pygame.display.set_caption("Lights Out")
 
-    pantalla_de_carga(SCREEN, configJuego, LvlsInfo, elementosFondo)
+    menu_principal(SCREEN, configJuego, LvlsInfo, elementosFondo)
 
 if __name__ == "__main__":
     main()

@@ -3,6 +3,7 @@ from assets.defaults.button import Button
 from assets.defaults.get_fonts import get_font
 from assets.defaults.idioma import cargar_idioma
 from assets.defaults.get_imgs import imgs_niveles
+from carga import pantalla_de_carga
 from lvl1 import pantalla_lvl1
 from lvl2 import pantalla_lvl2
 from lvl3 import pantalla_lvl3
@@ -108,12 +109,15 @@ def niveles(SCREEN, configJuego, LvlsInfo, elementosFondo):
                 if btnBack.checkForInput(PLAY_MOUSE_POS):
                     return SCREEN , configJuego, LvlsInfo, elementosFondo
                 if btnLvl1.checkForInput(PLAY_MOUSE_POS) and LvlsInfo["LvlDisponibles"]["lvl1"] == True:
+                    pantalla_de_carga(SCREEN, configJuego)
                     SCREEN , configJuego, LvlsInfo, elementosFondo = pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo)
                     recargarEdificios(LvlsInfo)
                 if btnLvl2.checkForInput(PLAY_MOUSE_POS) and LvlsInfo["LvlDisponibles"]["lvl2"] == True:
+                    pantalla_de_carga(SCREEN, configJuego)
                     SCREEN , configJuego, LvlsInfo, elementosFondo = pantalla_lvl2(SCREEN , configJuego, LvlsInfo, elementosFondo)
                     recargarEdificios(LvlsInfo)
                 if btnLvl3.checkForInput(PLAY_MOUSE_POS) and LvlsInfo["LvlDisponibles"]["lvl3"] == True:
+                    pantalla_de_carga(SCREEN, configJuego)
                     SCREEN , configJuego, LvlsInfo, elementosFondo = pantalla_lvl3(SCREEN , configJuego, LvlsInfo, elementosFondo)
                     recargarEdificios(LvlsInfo)
                 if configJuego["indiceMusic"] != 1:
