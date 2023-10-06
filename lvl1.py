@@ -4,6 +4,7 @@ from assets.defaults.get_fonts import get_font
 from assets.defaults.idioma import cargar_idioma
 from assets.defaults.get_imgs import imgs_lvl1
 from opciones_juego import opciones_juego
+from carga import pantalla_de_carga
 
 idioma = cargar_idioma()
 imgs = imgs_lvl1()
@@ -18,28 +19,28 @@ segundoAccion = 0
 consumoPorSeg = 0
 consumoTotal = 0
 tiempoPasado = 0
+focoPorSeg = 5
 barraMax = 0
 focos = {}
 color = ()
 fps = 0
 powerUps = {}
 
-quietoD = pygame.image.load("assets/img/sprites/personajes/jugador/personaje1.png")
-quietoI = pygame.image.load("assets/img/sprites/personajes/jugador/personaje4.png")
+quietoD = pygame.image.load("assets/img/sprites/personajes/hombre/personaje1.png")
+quietoI = pygame.image.load("assets/img/sprites/personajes/hombre/personaje4.png")
 
 derecha = [
-    pygame.image.load("assets/img/sprites/personajes/jugador/personaje1.png"),
-    pygame.image.load("assets/img/sprites/personajes/jugador/personaje2.png"),
-    pygame.image.load("assets/img/sprites/personajes/jugador/personaje3.png")]
+    pygame.image.load("assets/img/sprites/personajes/hombre/personaje1.png"),
+    pygame.image.load("assets/img/sprites/personajes/hombre/personaje2.png"),
+    pygame.image.load("assets/img/sprites/personajes/hombre/personaje3.png")]
 
 izquierda = [
-    pygame.image.load("assets/img/sprites/personajes/jugador/personaje4.png"),
-    pygame.image.load("assets/img/sprites/personajes/jugador/personaje5.png"),
-    pygame.image.load("assets/img/sprites/personajes/jugador/personaje6.png")]
+    pygame.image.load("assets/img/sprites/personajes/hombre/personaje4.png"),
+    pygame.image.load("assets/img/sprites/personajes/hombre/personaje5.png"),
+    pygame.image.load("assets/img/sprites/personajes/hombre/personaje6.png")]
 
 # funcion para reiniciar las variables
-def reinciar():
-    
+def reinciar(accion = "reiniciar"):
     global segundoUltimoFoco
     global segundoAnterior
     global consumoPorSeg
@@ -53,114 +54,125 @@ def reinciar():
     global focos
     global color
     global fps
-        
-    
-    segundoUltimoFoco = 0
-    color = (0, 255, 0)
-    segundoAnterior = 0
-    LimiteConsumo = 360 # el limite son 350 watts 
-    segundoAccion = 0
-    consumoPorSeg = 2 # 2 watt por segundo
-    consumoTotal = 0 # el consumo total de los focos
-    tiempoPasado = 0
-    barraMax = 275
-    fps = 10
-    powerUps = {
-        "powerUpsActivos": 0,
-        "powerUpsTotales": 0,
-        "probabilidad": 15,
-        "estados": { 
-            "reducirConsumo": {
-                "nombre": "reducirConsumo",
-                "PX": 0,
-                "piso": 0,
-                "activo": False,
-                "suelto": False,
-                "tiempo": 10,
-                "alto": 40
-            },
-            "Velocidad": {
-                "nombre": "velocidad",
-                "PX": 0,
-                "piso": 0,
-                "activo": False,
-                "suelto": False,
-                "tiempo": 10,
-                "alto": 40
-            }
-        }
-    }
-    focos = {
-        "focosFuncionales": 5,
-        "focosEncendidos": 0,
-        "focosFundidos": 0,
-        "focosTotales": 5,
-        "focosEstado": { # 0 = apagado, 1 = encendido, 2 = emepezando a calentarce, 3 = a punto de fundirse, 4 = fundido
-            "foco1": {
-                "numero": 1,
-                "estado": 0,
-                "ultimoEstado": 1,
-                "tiempoEncendido": 0,
-                "posicion": (341, 286),
-                "apagadorX1": 305,
-                "apagadorX2": 312,
-                "piso": 2
-            },
-            "foco2": {
-                "numero": 2,
-                "estado": 0,
-                "ultimoEstado": 1,
-                "tiempoEncendido": 0,
-                "posicion": (613, 286),
-                "apagadorX1": 583,
-                "apagadorX2": 590,
-                "piso": 2
-            },
-            "foco3": {
-                "numero": 3,
-                "estado": 0,
-                "ultimoEstado": 1,
-                "tiempoEncendido": 0,
-                "posicion": (916, 286),
-                "apagadorX1": 884,
-                "apagadorX2": 891,
-                "piso": 2
-            },
-            "foco4": {
-                "numero": 4,
-                "estado": 0,
-                "ultimoEstado": 1,
-                "tiempoEncendido": 0,
-                "posicion": (498, 465),
-                "apagadorX1": 462,
-                "apagadorX2": 469,
-                "piso": 1
-            },
-            "foco5": {
-                "numero": 5,
-                "estado": 0,
-                "ultimoEstado": 1,
-                "tiempoEncendido": 0,
-                "posicion": (832, 465),
-                "apagadorX1": 791,
-                "apagadorX2": 798,
-                "piso": 1
-            }
-        }
-    }
 
-    infoPersonaje = {
-        "Y": 0,
-        "X": 0,
-        "PX": 980,
-        "PY": 530,
-        "ancho": 50,
-        "velocidad": 10,
-        "direccion": "izquierda",
-        "cuentaPasos": 0,
-        "quieto": True,
-        "piso": 1
-    }
+    if accion == "reiniciar":
+        
+        segundoUltimoFoco = 0
+        color = (0, 255, 0)
+        segundoAnterior = 0
+        LimiteConsumo = 360 # el limite son 350 watts 
+        segundoAccion = 0
+        consumoPorSeg = 2 # 2 watt por segundo
+        consumoTotal = 0 # el consumo total de los focos
+        tiempoPasado = 0
+        barraMax = 275
+        fps = 10
+        powerUps = {
+            "powerUpsActivos": 0,
+            "powerUpsTotales": 0,
+            "probabilidad": 20,
+            "estados": { 
+                "reducirConsumo": {
+                    "nombre": "reducirConsumo",
+                    "PX": 0,
+                    "piso": 0,
+                    "activo": False,
+                    "suelto": False,
+                    "tiempo": 10,
+                    "alto": 40
+                },
+                "Velocidad": {
+                    "nombre": "velocidad",
+                    "PX": 0,
+                    "piso": 0,
+                    "activo": False,
+                    "suelto": False,
+                    "tiempo": 10,
+                    "alto": 40
+                }
+            }
+        }
+        focos = {
+            "focosFuncionales": 5,
+            "focosEncendidos": 0,
+            "focosFundidos": 0,
+            "focosTotales": 5,
+            "focosEstado": { # 0 = apagado, 1 = encendido, 2 = emepezando a calentarce, 3 = a punto de fundirse, 4 = fundido
+                "foco1": {
+                    "numero": 1,
+                    "estado": 0,
+                    "ultimoEstado": 1,
+                    "tiempoEncendido": 0,
+                    "posicion": (341, 286),
+                    "apagadorX1": 305,
+                    "apagadorX2": 312,
+                    "abierta": False,
+                    "posPuerta": (300, 335),
+                    "piso": 2
+                },
+                "foco2": {
+                    "numero": 2,
+                    "estado": 0,
+                    "ultimoEstado": 1,
+                    "tiempoEncendido": 0,
+                    "posicion": (613, 286),
+                    "apagadorX1": 583,
+                    "apagadorX2": 590,
+                    "abierta": False,
+                    "posPuerta": (572, 335),
+                    "piso": 2
+                },
+                "foco3": {
+                    "numero": 3,
+                    "estado": 0,
+                    "ultimoEstado": 1,
+                    "tiempoEncendido": 0,
+                    "posicion": (916, 286),
+                    "apagadorX1": 884,
+                    "apagadorX2": 891,
+                    "abierta": False,
+                    "posPuerta": (879, 335),
+                    "piso": 2
+                },
+                "foco4": {
+                    "numero": 4,
+                    "estado": 0,
+                    "ultimoEstado": 1,
+                    "tiempoEncendido": 0,
+                    "posicion": (498, 465),
+                    "apagadorX1": 462,
+                    "apagadorX2": 469,
+                    "abierta": False,
+                    "posPuerta": (456, 513),
+                    "piso": 1
+                },
+                "foco5": {
+                    "numero": 5,
+                    "estado": 0,
+                    "ultimoEstado": 1,
+                    "tiempoEncendido": 0,
+                    "posicion": (832, 465),
+                    "apagadorX1": 791,
+                    "apagadorX2": 798,
+                    "abierta": False,
+                    "posPuerta": (792, 513),
+                    "piso": 1
+                }
+            }
+        }
+
+        infoPersonaje = {
+            "Y": 0,
+            "X": 0,
+            "PX": 980,
+            "PY": 530,
+            "ancho": 50,
+            "velocidad": 10,
+            "direccion": "izquierda",
+            "cuentaPasos": 0,
+            "quieto": True,
+            "piso": 1
+        }
 
 # cuando se apague un foco habra una pequeña posibilidad de soltar un powerup
 def soltarPowerUp():
@@ -190,20 +202,17 @@ def pintarPowerUps(SCREEN, segundero):
         if powerUp[1]["suelto"] == True:
             if powerUp[1]["activo"] == False:
                 # verificamos si el personaje toco el powerUp
-                if infoPersonaje["PX"] >= powerUp[1]["PX"] - infoPersonaje["ancho"] and infoPersonaje["PX"] <= powerUp[1]["PX"] + 40:
-                    if infoPersonaje["piso"] == powerUp[1]["piso"]:
+                if (infoPersonaje["PX"] >= powerUp[1]["PX"] - infoPersonaje["ancho"] and infoPersonaje["PX"] <= powerUp[1]["PX"] + 40) and ( infoPersonaje["piso"] == powerUp[1]["piso"]):
                         powerUp[1]["activo"] = True
                         powerUp[1]["suelto"] = False
                         powerUps["powerUpsActivos"] += 1
-                        print("powerUp activado")
                 elif powerUp[1]["piso"] == 1:
-                    SCREEN.blit(imgs["powerUps"][powerUp[1]["nombre"]], (powerUp[1]["PX"], 530 + powerUp[1]["alto"]))
+                    SCREEN.blit(imgs["powerUps"][powerUp[1]["nombre"]], (powerUp[1]["PX"], 530 + (powerUp[1]["alto"] / 2)))
                 else:
-                    SCREEN.blit(imgs["powerUps"][powerUp[1]["nombre"]], (powerUp[1]["PX"], 350 + powerUp[1]["alto"]))
-                print(powerUp[1]["tiempo"])
+                    SCREEN.blit(imgs["powerUps"][powerUp[1]["nombre"]], (powerUp[1]["PX"], 350 + (powerUp[1]["alto"]) / 2))
         else:  
             if powerUp[1]["activo"] == True:
-                if segundero != segundoAnterior: # verificamos si el tiempo cambio 
+                if segundero != segundoAnterior: # verificamos si el tiempo cambio
                     powerUp[1]["tiempo"] -= 1 # si el tiempo cambio restamos un segundo
                     if powerUp[1]["tiempo"] <= 0: # verificamos si el powerUp se acabo
                         powerUp[1]["tiempo"] = 10
@@ -213,10 +222,15 @@ def pintarPowerUps(SCREEN, segundero):
 
 # funcion para mostrar una pantalla de pausa antes de iniciar
 def pausaInicio(SCREEN, configJuego):
+    global infoPersonaje
     detener = True
+    configJuego["Volumen"] /= 4
+    pygame.mixer.music.set_volume(configJuego["Volumen"])
     while detener:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                configJuego["Volumen"] *= 4
+                pygame.mixer.music.set_volume(configJuego["Volumen"])
                 detener = False
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -328,6 +342,13 @@ def moverPersonaje(SCREEN):
             infoPersonaje["quieto"] = True
             pintarPersonaje(SCREEN, accion="quieto")
 
+def pintarPuerta(SCEEN):
+    global focos
+    for foco in focos["focosEstado"].items(): # recorremos los focos
+        if foco[1]["abierta"] == True:
+            SCEEN.blit(imgs["abierta"], foco[1]["posPuerta"])
+            
+
 # funcion para pintar los focos
 def pintarFocos(SCREEN, segundero):
     global segundoUltimoFoco
@@ -335,10 +356,15 @@ def pintarFocos(SCREEN, segundero):
     global consumoPorSeg
     global consumoTotal
     global tiempoPasado
+    global focoPorSeg
     global powerUps
     global focos
     global color
     if segundero != segundoAnterior: # verificamos si el tiempo cambio 
+            # desactivamos las puertas activas
+            for foco in focos["focosEstado"].items():
+                if foco[1]["abierta"] == True:
+                    foco[1]["abierta"] = False
             tiempoPasado += 1 # si el tiempo cambio sumamos un segundo
             if powerUps["estados"]["reducirConsumo"]["activo"] == True: # verificamos si el powerUp de reducir consumo esta activo
                 consumoTotal += (consumoPorSeg / 2) * focos["focosEncendidos"] # reducimos a la mitad el consumo de los focos encendidos
@@ -366,15 +392,23 @@ def pintarFocos(SCREEN, segundero):
 
                     elif foco[1]["tiempoEncendido"] >= 30: # verificamos si el foco esta encendido por mas de 60 segundos
                         foco[1]["estado"] = 2
-                        foco[1]["ultimoEstado"] = 2                    
+                        foco[1]["ultimoEstado"] = 2
+    # si hay 4 focos prendidos vamos a esperar 10 segundos para prender el siguiente foco
 
-    if segundoUltimoFoco + 5 <= tiempoPasado and focos["focosEncendidos"] != 5 - focos["focosFundidos"]: # verificamos si pasaron 5 segundos desde que se fundio el ultimo foco
+    if focos["focosEncendidos"] >= 4:
+        focoPorSeg = 10
+    else:
+        focoPorSeg = 5
+
+    if segundoUltimoFoco + focoPorSeg <= tiempoPasado and focos["focosEncendidos"] != 5 - focos["focosFundidos"]: # verificamos si pasaron 5 segundos desde que se fundio el ultimo foco
         segundoUltimoFoco = tiempoPasado # actualizamos el tiempo del ultimo foco encendido
         numFoco = 0
         while True: # buscamos un foco apagado
             numFoco = random.randint(1, focos["focosTotales"]) # elegimos un foco al azar
             if focos["focosEstado"][f"foco{numFoco}"]["estado"] == 0: # verificamos si el foco esta apagado
                 break
+        # abrimos la puerta
+        focos["focosEstado"][f"foco{numFoco}"]["abierta"] = True
         focos["focosEstado"][f"foco{numFoco}"]["estado"] = focos["focosEstado"][f"foco{numFoco}"]["ultimoEstado"] # encendemos el foco
         focos["focosEncendidos"] += 1 # sumamos un foco encendido
 
@@ -471,7 +505,6 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
     global barraMax
     global focos
     global color
-    reinciar()
 
     if configJuego["indiceMusic"] != 2:
         configJuego["indiceMusic"] = 2
@@ -482,7 +515,8 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
     pygame.display.set_caption(idioma[configJuego["Idioma"]]["Nivel1"]["Titulo"])
     btnOpciones = Button(image=None, pos=(1047,57), text_input="||", font=get_font(30), base_color="White", hovering_color="#555f68") # boton de pausa
 
-    pausaInicio(SCREEN, configJuego) # pantalla antes de iniciar
+    reinciar(accion = "reiniciar")
+    pausaInicio(SCREEN, configJuego)
 
     # bucle del juego
     while True:
@@ -491,25 +525,28 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.KEYDOWN:
+                # comprobamos si preciono la tecla escape
+                if event.key == pygame.K_ESCAPE:
+                    SCREEN , configJuego, LvlsInfo, elementosFondo, accion = opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo)
+                    pygame.display.set_caption(idioma[configJuego["Idioma"]]["Nivel1"]["Titulo"])
+                    if accion == "salir":
+                        pantalla_de_carga(SCREEN, configJuego)
+                        return SCREEN , configJuego, LvlsInfo, elementosFondo
+                    elif accion == "reiniciar":
+                        pausaInicio(SCREEN, configJuego)
+                        reinciar()
+
             # eventos del raton
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if btnOpciones.checkForInput(posicionMause):
                     SCREEN , configJuego, LvlsInfo, elementosFondo, accion = opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo)
                     pygame.display.set_caption(idioma[configJuego["Idioma"]]["Nivel1"]["Titulo"])
                     if accion == "salir":
+                        pantalla_de_carga(SCREEN, configJuego)
                         return SCREEN , configJuego, LvlsInfo, elementosFondo
                     elif accion == "reiniciar":
-                        segundoUltimoFoco = 0
-                        segundoAnterior = 0
-                        infoPersonaje = {}
-                        LimiteConsumo = 0
-                        segundoAccion = 0
-                        consumoPorSeg = 0
-                        consumoTotal = 0
-                        tiempoPasado = 0
-                        barraMax = 0
-                        focos = {}
-                        color = ()
+                        pausaInicio(SCREEN, configJuego)
                         reinciar()
 
         segundero = time.localtime().tm_sec # optenemos el tiempo actual
@@ -523,9 +560,11 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
 
         pygame.draw.rect(SCREEN, color, (1147, (509 - consumoTotal), 40, consumoTotal)) # dibujamos la barra de consumo
 
+        pintarPowerUps(SCREEN, segundero) # actualizamos los estados de los powerUps
+
         pintarFocos(SCREEN, segundero) # actualizamos los estados de los focos
 
-        pintarPowerUps(SCREEN, segundero) # actualizamos los estados de los powerUps
+        pintarPuerta(SCREEN) # pintamos las puertas
 
         moverPersonaje(SCREEN) # movemos al personaje
 
@@ -543,7 +582,5 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
 
         pygame.display.flip() # actualizamos la pantalla
 
-
 # ! Nota importante:
 # ? agregar sonidos a clicks, pasos, puertas, etc...
-# ? agregar Powerups

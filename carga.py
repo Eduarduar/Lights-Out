@@ -1,16 +1,14 @@
 import sys, pygame, random
 from assets.defaults.idioma import cargar_idioma
 from assets.defaults.get_fonts import get_font
-from menu_principal import menu_principal
 
 idioma = cargar_idioma()
 
-def pantalla_de_carga(SCREEN, configJuego, LvlsInfo, elementosFondo):
+def pantalla_de_carga(SCREEN, configJuego):
     while True:
-
         # creamos un bucle for que repita el codigo de abajo 4 veces donde la variable i empieze en 1
 
-        cantidad = random.randint(1, 3)
+        cantidad = random.randint(2, 3)
         for i in range(1, cantidad):
             for e in range(1, 5):
                 SCREEN.fill("black")
@@ -24,11 +22,4 @@ def pantalla_de_carga(SCREEN, configJuego, LvlsInfo, elementosFondo):
                 # despuesde 3 segundos cambiamos a la pantalla de menu principal
                 pygame.time.delay(300)
         
-        menu_principal(SCREEN, configJuego, LvlsInfo, elementosFondo)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        pygame.display.update()
+        break

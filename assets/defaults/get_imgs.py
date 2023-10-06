@@ -78,6 +78,7 @@ def imgs_lvl1():
     sombra5 = pygame.image.load("assets/img/lvl1/sombra5.png")
     controles = pygame.image.load("assets/img/controles.png")
     oscuro = pygame.image.load("assets/img/oscuro.png")
+    abierta = pygame.image.load("assets/img/sprites/items/puerta_departamento/SpritePuertaOn.png")
 
     sombras = {
         "sombra1": sombra1,
@@ -101,7 +102,8 @@ def imgs_lvl1():
         "powerUps": {
             "velocidad": rayo,
             "reducirConsumo": reloj
-        }
+        },
+        "abierta": abierta
     }
 
     return imgs

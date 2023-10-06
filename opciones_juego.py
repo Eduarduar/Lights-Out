@@ -8,6 +8,7 @@ idioma = cargar_idioma()
 imgs = imgs_optionsLvls()
 
 def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
+            
     configJuego["Volumen"] /= 4
     pygame.mixer.music.set_volume(configJuego["Volumen"])
     SCREEN.blit(imgs["oscuro"], (0,0))
@@ -21,27 +22,17 @@ def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
     SCREEN.blit(MENU_TEXT, MENU_RECT)
 
     while True:
-
-        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-        
-        letra = 40
-        if configJuego["Idioma"] == "es": 
-            letra = 32 
-
-        btnContinuar = Button(image=pygame.transform.scale(imgs["caja"], (300, 100)), pos=(640, 250),  text_input=idioma[configJuego["Idioma"]]["OpcionesLvl"]["Reanudar"], font=get_font(letra), base_color="#d7fcd4", hovering_color="#36ddd4")
-        btnReiniciar = Button(image=pygame.transform.scale(imgs["caja"], (300, 100)), pos=(640, 400), text_input=idioma[configJuego["Idioma"]]["OpcionesLvl"]["Reiniciar"], font=get_font(letra), base_color="#d7fcd4", hovering_color="#3d91da")
-        btnSalir = Button(image=pygame.transform.scale(imgs["caja"], (300, 100)), pos=(640, 550), text_input=idioma[configJuego["Idioma"]]["OpcionesLvl"]["Salir"], font=get_font(letra), base_color="#d7fcd4", hovering_color="Red")
-
-        for button in [btnContinuar, btnReiniciar, btnSalir]: # recorremos los botones
-            button.changeColor(OPTIONS_MOUSE_POS) # cambiamos el color de los botones
-            button.update(SCREEN) # actualizamos los botones
-
-        # detectamos los eventos ----------------------
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        configJuego["Volumen"] *= 4
+                        pygame.mixer.music.set_volume(configJuego["Volumen"])
+                        accion = "continuar"
+                        return SCREEN , configJuego, LvlsInfo, elementosFondo, accion
 
             if event.type == pygame.MOUSEBUTTONDOWN: # detectamos el click del mouse
                 if btnContinuar.checkForInput(OPTIONS_MOUSE_POS): 
@@ -59,6 +50,20 @@ def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
                     pygame.mixer.music.set_volume(configJuego["Volumen"])
                     accion = "salir"
                     return SCREEN , configJuego, LvlsInfo, elementosFondo , accion
+                
+        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+        
+        letra = 40
+        if configJuego["Idioma"] == "es": 
+            letra = 32 
+
+        btnContinuar = Button(image=pygame.transform.scale(imgs["caja"], (300, 100)), pos=(640, 250),  text_input=idioma[configJuego["Idioma"]]["OpcionesLvl"]["Reanudar"], font=get_font(letra), base_color="#d7fcd4", hovering_color="#36ddd4")
+        btnReiniciar = Button(image=pygame.transform.scale(imgs["caja"], (300, 100)), pos=(640, 400), text_input=idioma[configJuego["Idioma"]]["OpcionesLvl"]["Reiniciar"], font=get_font(letra), base_color="#d7fcd4", hovering_color="#3d91da")
+        btnSalir = Button(image=pygame.transform.scale(imgs["caja"], (300, 100)), pos=(640, 550), text_input=idioma[configJuego["Idioma"]]["OpcionesLvl"]["Salir"], font=get_font(letra), base_color="#d7fcd4", hovering_color="Red")
+
+        for button in [btnContinuar, btnReiniciar, btnSalir]: # recorremos los botones
+            button.changeColor(OPTIONS_MOUSE_POS) # cambiamos el color de los botones
+            button.update(SCREEN) # actualizamos los botones
 
 
         pygame.display.update()
