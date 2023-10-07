@@ -7,7 +7,6 @@ from opciones_juego import opciones_juego
 from carga import pantalla_de_carga
 
 idioma = cargar_idioma()
-imgs = imgs_lvl1()
 reloj = pygame.time.Clock()
 
 #inicilizamos las variables
@@ -25,6 +24,7 @@ focos = {}
 color = ()
 fps = 0
 powerUps = {}
+imgs = {}
 
 quietoD = pygame.image.load("assets/img/sprites/personajes/hombre/personaje1.png")
 quietoI = pygame.image.load("assets/img/sprites/personajes/hombre/personaje4.png")
@@ -53,8 +53,8 @@ def reinciar(accion = "reiniciar"):
     global barraMax
     global focos
     global color
+    global imgs
     global fps
-
     if accion == "reiniciar":
         
         segundoUltimoFoco = 0
@@ -342,13 +342,13 @@ def moverPersonaje(SCREEN):
             infoPersonaje["quieto"] = True
             pintarPersonaje(SCREEN, accion="quieto")
 
+# pinta las puertas abiertas
 def pintarPuerta(SCEEN):
     global focos
     for foco in focos["focosEstado"].items(): # recorremos los focos
         if foco[1]["abierta"] == True:
             SCEEN.blit(imgs["abierta"], foco[1]["posPuerta"])
             
-
 # funcion para pintar los focos
 def pintarFocos(SCREEN, segundero):
     global segundoUltimoFoco
@@ -422,44 +422,43 @@ def pintarFocos(SCREEN, segundero):
 # funcion para mostrar una pantalla de game over
 def perder(SCREEN, configJuego, LvlsInfo, elementosFondo):
     # mostramos una pantalla de game over o un mensaje de game over
-            pygame.image.save(SCREEN, "assets/img/pantalla.png")
-            ultimoFrame = pygame.image.load("assets/img/pantalla.png")
-            while True:
-                for event in pygame.event.get():
-                    # si preciona cualquier tecla retorna al menu principal
-                    if event.type == pygame.KEYDOWN:
-                        return SCREEN , configJuego, LvlsInfo, elementosFondo
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                SCREEN.blit(ultimoFrame, (0,0))
-                SCREEN.blit(imgs["oscuro"], (0,0))
+    pygame.image.save(SCREEN, "assets/img/pantalla.png")
+    ultimoFrame = pygame.image.load("assets/img/pantalla.png")
+    pausa = True
+    while True:
+        SCREEN.blit(ultimoFrame, (0,0))
+        SCREEN.blit(imgs["oscuro"], (0,0))
 
-                TITULO_TEXT = get_font(100).render(idioma[configJuego["Idioma"]]["Juego"]["Perdiste"], True, "#a1040f")
-                TITULO_RECT = TITULO_TEXT.get_rect(center=(640, 200))
-                SCREEN.blit(TITULO_TEXT, TITULO_RECT)
+        TITULO_TEXT = get_font(100).render(idioma[configJuego["Idioma"]]["Juego"]["Perdiste"], True, "#a1040f")
+        TITULO_RECT = TITULO_TEXT.get_rect(center=(640, 200))
+        SCREEN.blit(TITULO_TEXT, TITULO_RECT)
 
-                Text_text = get_font(20).render(idioma[configJuego["Idioma"]]["Juego"]["Preciona"], True, "#ffffff")
-                Text_rect = Text_text.get_rect(center=(640, 500))
-                SCREEN.blit(Text_text, Text_rect)
+        Text_text = get_font(20).render(idioma[configJuego["Idioma"]]["Juego"]["Preciona"], True, "#ffffff")
+        Text_rect = Text_text.get_rect(center=(640, 500))
+        SCREEN.blit(Text_text, Text_rect)
 
-                pygame.display.flip()
-
+        pygame.display.flip()
+        
+        if pausa == True:
+            time.sleep(1)
+            pygame.event.clear(pygame.KEYDOWN)
+            pausa = False
+        
+        for event in pygame.event.get():
+            # si preciona cualquier tecla retorna al menu principal
+            if event.type == pygame.KEYDOWN:
+                return SCREEN , configJuego, LvlsInfo, elementosFondo
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                    
 # funcion para mostrar una pantalla de ganaste
 def ganar(SCREEN, configJuego, LvlsInfo, elementosFondo):
     # mostramos una pantalla de ganaste o un mensaje de ganaste
     pygame.image.save(SCREEN, "assets/img/pantalla.png")
     ultimoFrame = pygame.image.load("assets/img/pantalla.png")
+    pausa  = True
     while True:
-        for event in pygame.event.get():
-            # si preciona cualquier tecla retorna al menu principal
-            if event.type == pygame.KEYDOWN:
-                LvlsInfo["LvlDisponibles"]["lvl2"] = True
-                LvlsInfo["LvlCompletados"]["lvl1"] = True
-                return SCREEN , configJuego, LvlsInfo, elementosFondo
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
         SCREEN.blit(ultimoFrame, (0,0))
         SCREEN.blit(imgs["oscuro"], (0,0))
 
@@ -472,6 +471,21 @@ def ganar(SCREEN, configJuego, LvlsInfo, elementosFondo):
         SCREEN.blit(Text_text, Text_rect)
 
         pygame.display.flip()
+        
+        if pausa == True:
+            time.sleep(1)
+            pygame.event.clear(pygame.KEYDOWN)
+            pausa = False
+        
+        for event in pygame.event.get():
+            # si preciona cualquier tecla retorna al menu principal
+            if event.type == pygame.KEYDOWN:
+                LvlsInfo["LvlCompletados"]["lvl1"] = True
+                LvlsInfo["LvlDisponibles"]["lvl2"] = True
+                return SCREEN , configJuego, LvlsInfo, elementosFondo
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
 # funcion para pintar el tiempo transcurrido
 def pintarTiempo(SCREEN, tiempoPasado, configJuego):    
@@ -505,6 +519,9 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
     global barraMax
     global focos
     global color
+    global imgs
+    
+    imgs = imgs_lvl1(configJuego["Idioma"]) # cargamos las imagenes del nivel
 
     if configJuego["indiceMusic"] != 2:
         configJuego["indiceMusic"] = 2

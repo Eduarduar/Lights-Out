@@ -61,24 +61,28 @@ def imgs_niveles():
 
     return imgs
 
-def imgs_lvl1():
+def imgs_lvl1(idioma):
     reloj = pygame.transform.scale(pygame.image.load("assets/img/sprites/items/powerUps/reloj.png"), (30,40))
     rayo = pygame.transform.scale(pygame.image.load("assets/img/sprites/items/powerUps/rayo.png"), (30,40))
+    abierta = pygame.image.load("assets/img/sprites/items/puerta_departamento/SpritePuertaOn.png")
     Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
-    fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
-    sombra_lvl1 = pygame.image.load("assets/img/lvl1/sombra_lvl1.png")
     bombilla0 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla0.png")
     bombilla1 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla1.png")
     bombilla2 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla2.png")
     bombilla3 = pygame.image.load("assets/img/sprites/items/bombillas/Bombilla3.png")
+    sombra_lvl1 = pygame.image.load("assets/img/lvl1/sombra_lvl1.png")
+    fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
     sombra1 = pygame.image.load("assets/img/lvl1/sombra1.png")
     sombra2 = pygame.image.load("assets/img/lvl1/sombra2.png")
     sombra3 = pygame.image.load("assets/img/lvl1/sombra3.png")
     sombra4 = pygame.image.load("assets/img/lvl1/sombra4.png")
     sombra5 = pygame.image.load("assets/img/lvl1/sombra5.png")
-    controles = pygame.image.load("assets/img/controles.png")
     oscuro = pygame.image.load("assets/img/oscuro.png")
-    abierta = pygame.image.load("assets/img/sprites/items/puerta_departamento/SpritePuertaOn.png")
+
+    if idioma == "es":
+        controles = pygame.image.load("assets/img/controlesEs.png")
+    else:
+        controles = pygame.image.load("assets/img/controlesEn.png")
 
     sombras = {
         "sombra1": sombra1,
@@ -168,6 +172,24 @@ def imgs_optionsLvls():
     imgs = {
         "caja": Caja,
         "oscuro": oscuro
+    }
+
+    return imgs
+
+def imgs_carga():
+    
+    img1 = pygame.image.load("assets/img/sprites/personajes/hombre/personaje1.png")
+    img2 = pygame.image.load("assets/img/sprites/personajes/hombre/personaje2.png")
+    img3 = pygame.image.load("assets/img/sprites/personajes/hombre/personaje3.png")
+    personaje = [img1, img2, img3]
+    derecha = []
+    for i in range(0,3):
+        for j in range(0,5):
+            derecha.append(personaje[i])
+
+    imgs = {
+        "derecha": derecha,
+        "quieto": img1
     }
 
     return imgs
