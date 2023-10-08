@@ -4,7 +4,7 @@ from assets.defaults.get_fonts import get_font
 from assets.defaults.get_imgs import imgs_carga
 
 idioma = cargar_idioma()
-imgs = imgs_carga()
+imgs = []
 
 # crearemos una barra de carga horizontal que avance de poco en 
 
@@ -32,7 +32,7 @@ def obtenerPausas(maximo):
 
 # funcion para pintar el personaje
 def pintarPersonaje(SCREEN, porcentaje, accion):
-    global cuentaPasos, px, py
+    global cuentaPasos, px, py, imgs
 
     if accion == "parado":
         SCREEN.blit(imgs["quieto"], (int(px + porcentaje), int(py)))
@@ -47,6 +47,8 @@ def pintarPersonaje(SCREEN, porcentaje, accion):
 # funcion para la pantalla de carga
 def pantalla_de_carga(SCREEN, configJuego):
     # inicializamos nuestros parametros
+    global imgs
+    imgs = imgs_carga(configJuego["personaje"])
     reloj = pygame.time.Clock()
     porcentaje = 0
     maximo = 1000

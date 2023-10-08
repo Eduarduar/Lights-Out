@@ -2,11 +2,22 @@ import pygame
 from menu_principal import menu_principal
 from intro import intro
 
+print("Lights Out - v0.1.0")
+# convertimos el input a mayusculas para evitar errores
+sexo = input("Elija el sexo (H/M): ")
+
 configJuego = {
     "Idioma": "es",
     "Volumen": 0.50,
     "indiceMusic": 0,
+    "historia": True,
+    "personaje": "mujer"
 }
+
+if sexo == "m" or sexo == "M":
+    configJuego["personaje"] = "mujer"
+else:
+    configJuego["personaje"] = "hombre"
 
 elementosFondo = {
     "luna": {

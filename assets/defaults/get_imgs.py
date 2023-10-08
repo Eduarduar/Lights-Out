@@ -176,11 +176,11 @@ def imgs_optionsLvls():
 
     return imgs
 
-def imgs_carga():
+def imgs_carga(personaje):
     
-    img1 = pygame.image.load("assets/img/sprites/personajes/hombre/personaje1.png")
-    img2 = pygame.image.load("assets/img/sprites/personajes/hombre/personaje2.png")
-    img3 = pygame.image.load("assets/img/sprites/personajes/hombre/personaje3.png")
+    img1 = pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje1.png")
+    img2 = pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje2.png")
+    img3 = pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje3.png")
     personaje = [img1, img2, img3]
     derecha = []
     for i in range(0,3):
@@ -198,5 +198,44 @@ def imgs_intro():
     imgs = []
     for i in range(1, 63):
         imgs.append(pygame.image.load("./assets/img/intro/" + str(i) + ".png"))
+
+    return imgs
+
+def imgs_historia(personaje):
+    pasillo = pygame.image.load("assets/img/historia/pasillo.png")
+    sombra = pygame.image.load("assets/img/historia/sombra.png")
+    sombraLuz = pygame.image.load("assets/img/historia/sombra1.png")
+    entrada = pygame.image.load("assets/img/historia/entrada.png")
+    chat = pygame.transform.scale(pygame.image.load("assets/img/historia/chat.png"), (110, 120))
+    #scalamos por 2 los focos
+    foco1 = pygame.transform.scale(pygame.image.load("assets/img/sprites/items/bombillas/Bombilla0.png"), (64, 64))
+    foco2 = pygame.transform.scale(pygame.image.load("assets/img/sprites/items/bombillas/Bombilla1.png"), (64, 64))
+    rayo = pygame.transform.scale(pygame.image.load("assets/img/sprites/items/powerUps/rayo.png"), (64,64))
+
+
+    derecha = [] 
+    izquierda = []
+    paradoD = pygame.transform.scale(pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje1.png"), (100, 130))
+    paradoI = pygame.transform.scale(pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje4.png"), (100, 130))
+    for i in range(1, 4):
+        derecha.append(pygame.transform.scale(pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje" + str(i) + ".png"), (100, 130)))
+
+    for i in range(4, 7):
+        izquierda.append(pygame.transform.scale(pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje" + str(i) + ".png"), (100, 130)))
+
+    imgs = {
+        "pasillo": pasillo,
+        "sombra": sombra,
+        "sombraLuz": sombraLuz,
+        "entrada": entrada,
+        "derecha": derecha,
+        "izquierda": izquierda,
+        "paradoD": paradoD,
+        "paradoI": paradoI,
+        "chat": chat,
+        "foco": foco1,
+        "foco2": foco2,
+        "rayo": rayo
+    }
 
     return imgs

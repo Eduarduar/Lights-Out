@@ -5,6 +5,8 @@ from assets.defaults.button import Button
 from assets.defaults.idioma import cargar_idioma
 from assets.defaults.get_fonts import get_font
 from assets.defaults.get_imgs import imgs_menu_principal
+from carga import pantalla_de_carga
+from historia import historia
 
 imgs = imgs_menu_principal()
 reloj = pygame.time.Clock()
@@ -54,6 +56,10 @@ def menu_principal(SCREEN , configJuego, LvlsInfo, elementosFondo):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN: # si el evento es un click del mouse
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de jugar
+                    if configJuego["historia"]:
+                        pantalla_de_carga(SCREEN, configJuego)
+                        historia(SCREEN, configJuego["personaje"])
+                        configJuego["historia"] = False
                     SCREEN , configJuego, LvlsInfo, elementosFondo = niveles(SCREEN , configJuego, LvlsInfo, elementosFondo) # si fue en el boton de jugar, vamos a la pantalla de niveles
                     pygame.display.set_caption(idioma[configJuego["Idioma"]]["MenuInicial"]["Titulo"])
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS): # detectamos si el click fue en el boton de opciones

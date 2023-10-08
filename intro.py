@@ -1,4 +1,4 @@
-import sys, pygame
+import pygame
 from assets.defaults.get_imgs import imgs_intro
 
 imgs = imgs_intro()
