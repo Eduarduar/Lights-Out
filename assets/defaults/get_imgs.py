@@ -193,3 +193,10 @@ def imgs_carga():
     }
 
     return imgs
+
+def imgs_intro():
+    imgs = []
+    for i in range(1, 63):
+        imgs.append(pygame.image.load("./assets/img/intro/" + str(i) + ".png"))
+
+    return imgs

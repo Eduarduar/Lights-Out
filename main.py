@@ -1,5 +1,6 @@
 import pygame
 from menu_principal import menu_principal
+from intro import intro
 
 configJuego = {
     "Idioma": "es",
@@ -40,6 +41,7 @@ def main():
     SCREEN = pygame.display.set_mode((1280, 720))
     pygame.display.set_caption("Lights Out")
 
+    intro(SCREEN)
     menu_principal(SCREEN, configJuego, LvlsInfo, elementosFondo)
 
 if __name__ == "__main__":
