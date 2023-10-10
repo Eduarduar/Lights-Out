@@ -185,21 +185,26 @@ def reiniciar(personaje):
 # cuando se apague un foco habra una pequeña posibilidad de soltar un powerup
 def soltarPowerUp():
     global powerUps
+    activo = False
     soltarPowerUp = random.randint(1, 100)
     if soltarPowerUp <= powerUps["probabilidad"]:
         soltarPowerUp = random.randint(1, 100)
         if soltarPowerUp <= 50:
-            powerUps["estados"]["reducirConsumo"]["PX"] = random.randint(200, 1000)
-            powerUps["estados"]["reducirConsumo"]["piso"] = random.randint(1, 2)
-            powerUps["estados"]["reducirConsumo"]["activo"] = False
-            powerUps["estados"]["reducirConsumo"]["suelto"] = True
-            powerUps["estados"]["reducirConsumo"]["tiempo"] = 10
-        else:
-            powerUps["estados"]["Velocidad"]["PX"] = random.randint(200, 1000)
-            powerUps["estados"]["Velocidad"]["piso"] = random.randint(1, 2)
-            powerUps["estados"]["Velocidad"]["activo"] = False
-            powerUps["estados"]["Velocidad"]["suelto"] = True
-            powerUps["estados"]["Velocidad"]["tiempo"] = 10
+            if powerUps["estados"]["reducirConsumo"]["activo"] != True and powerUps["estados"]["reducirConsumo"]["suelto"] != True:
+                powerUps["estados"]["reducirConsumo"]["PX"] = random.randint(200, 1000)
+                powerUps["estados"]["reducirConsumo"]["piso"] = random.randint(1, 2)
+                powerUps["estados"]["reducirConsumo"]["activo"] = False
+                powerUps["estados"]["reducirConsumo"]["suelto"] = True
+                powerUps["estados"]["reducirConsumo"]["tiempo"] = 10
+                activo = True
+        if soltarPowerUp > 50 or activo == False:
+            if powerUps["estados"]["Velocidad"]["activo"] != True and powerUps["estados"]["Velocidad"]["suelto"] != True:
+                powerUps["estados"]["Velocidad"]["PX"] = random.randint(200, 1000)
+                powerUps["estados"]["Velocidad"]["piso"] = random.randint(1, 2)
+                powerUps["estados"]["Velocidad"]["activo"] = False
+                powerUps["estados"]["Velocidad"]["suelto"] = True
+                powerUps["estados"]["Velocidad"]["tiempo"] = 10
+                activo = True
 
 # funcion que controla los powerUps y los coloca en pantalla
 def pintarPowerUps(SCREEN, segundero):
@@ -373,6 +378,7 @@ def pintarFocos(SCREEN, segundero):
             for foco in focos["focosEstado"].items():
                 if foco[1]["abierta"] == True:
                     foco[1]["abierta"] = False
+                    pygame.mixer.Sound("assets/sounds/cerrarPuerta2.wav").play()
             tiempoPasado += 1 # si el tiempo cambio sumamos un segundo
             if powerUps["estados"]["reducirConsumo"]["activo"] == True: # verificamos si el powerUp de reducir consumo esta activo
                 consumoTotal += (consumoPorSeg / 2) * focos["focosEncendidos"] # reducimos a la mitad el consumo de los focos encendidos
@@ -388,17 +394,18 @@ def pintarFocos(SCREEN, segundero):
                     elif (consumoTotal > 240): # color rojo
                         color = (255, 0, 0)
 
-                    if foco[1]["tiempoEncendido"] >= 70: # verificamos si el foco esta encendido por mas de 30 segundos
+                    if foco[1]["tiempoEncendido"] >= 70: # verificamos si el foco esta encendido por mas de 70 segundos
                         foco[1]["estado"] = 4
                         foco[1]["ultimoEstado"] = 4
                         focos["focosFundidos"] += 1
                         focos["focosEncendidos"] -= 1
+                        pygame.mixer.Sound("assets/sounds/romper.wav").play() # sonido de fundir foco
 
                     elif foco[1]["tiempoEncendido"] >= 45: # verificamos si el foco esta encendido por mas de 45 segundos
                         foco[1]["estado"] = 3
                         foco[1]["ultimoEstado"] = 3
 
-                    elif foco[1]["tiempoEncendido"] >= 30: # verificamos si el foco esta encendido por mas de 60 segundos
+                    elif foco[1]["tiempoEncendido"] >= 30: # verificamos si el foco esta encendido por mas de 30 segundos
                         foco[1]["estado"] = 2
                         foco[1]["ultimoEstado"] = 2
     # si hay 4 focos prendidos vamos a esperar 10 segundos para prender el siguiente foco
@@ -417,8 +424,10 @@ def pintarFocos(SCREEN, segundero):
                 break
         # abrimos la puerta
         focos["focosEstado"][f"foco{numFoco}"]["abierta"] = True
+        pygame.mixer.Sound("assets/sounds/abrirPuerta.wav").play() # sonido de abrir puerta
         focos["focosEstado"][f"foco{numFoco}"]["estado"] = focos["focosEstado"][f"foco{numFoco}"]["ultimoEstado"] # encendemos el foco
         focos["focosEncendidos"] += 1 # sumamos un foco encendido
+        pygame.mixer.Sound("assets/sounds/prenderFoco.wav").play() # sonido de encender foco
 
     # pintamos los focos encendidos
     for foco in focos["focosEstado"].items(): # recorremos los focos
@@ -432,6 +441,10 @@ def perder(SCREEN, configJuego, LvlsInfo, elementosFondo):
     # mostramos una pantalla de game over o un mensaje de game over
     pygame.image.save(SCREEN, "assets/img/pantalla.png")
     ultimoFrame = pygame.image.load("assets/img/pantalla.png")
+    pygame.mixer.Sound("assets/sounds/perder.ogg").play() # reproducimos el sonido en bucle
+    # bajamos el volumen de la musica
+    configJuego["Volumen"] /= 4
+    pygame.mixer.music.set_volume(configJuego["Volumen"])
     pausa = True
     while True:
         SCREEN.blit(ultimoFrame, (0,0))
@@ -455,6 +468,10 @@ def perder(SCREEN, configJuego, LvlsInfo, elementosFondo):
         for event in pygame.event.get():
             # si preciona cualquier tecla retorna al menu principal
             if event.type == pygame.KEYDOWN:
+                # subimos el volumen de la musica
+                configJuego["Volumen"] *= 4
+                pygame.mixer.music.set_volume(configJuego["Volumen"])
+                pygame.mixer.Sound("assets/sounds/viento.wav").stop()
                 return SCREEN , configJuego, LvlsInfo, elementosFondo
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -465,6 +482,10 @@ def ganar(SCREEN, configJuego, LvlsInfo, elementosFondo):
     # mostramos una pantalla de ganaste o un mensaje de ganaste
     pygame.image.save(SCREEN, "assets/img/pantalla.png")
     ultimoFrame = pygame.image.load("assets/img/pantalla.png")
+    pygame.mixer.Sound("assets/sounds/ganar.wav").play()
+    # bajamos el volumen de la musica
+    configJuego["Volumen"] /= 4
+    pygame.mixer.music.set_volume(configJuego["Volumen"])
     pausa  = True
     while True:
         SCREEN.blit(ultimoFrame, (0,0))
@@ -481,7 +502,7 @@ def ganar(SCREEN, configJuego, LvlsInfo, elementosFondo):
         pygame.display.flip()
         
         if pausa == True:
-            time.sleep(1)
+            time.sleep(5)
             pygame.event.clear(pygame.KEYDOWN)
             pausa = False
         
@@ -490,6 +511,9 @@ def ganar(SCREEN, configJuego, LvlsInfo, elementosFondo):
             if event.type == pygame.KEYDOWN:
                 LvlsInfo["LvlCompletados"]["lvl1"] = True
                 LvlsInfo["LvlDisponibles"]["lvl2"] = True
+                # subimos el volumen de la musica
+                configJuego["Volumen"] *= 4
+                pygame.mixer.music.set_volume(configJuego["Volumen"])
                 return SCREEN , configJuego, LvlsInfo, elementosFondo
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -605,6 +629,3 @@ def pantalla_lvl1(SCREEN , configJuego, LvlsInfo, elementosFondo):
             return SCREEN , configJuego, LvlsInfo, elementosFondo
 
         pygame.display.flip() # actualizamos la pantalla
-
-# ! Nota importante:
-# ? agregar sonidos a clicks, pasos, puertas, etc...

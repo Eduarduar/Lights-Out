@@ -73,7 +73,7 @@ def pantalla_de_carga(SCREEN, configJuego):
                 i = 1
             i += 1
 
-        SCREEN.fill("BLACK") # rellenamos el fondo
+        SCREEN.blit(imgs["fondo"], (0, 0)) # pintamos el fondo
 
         # Cargamos la barra de carga
         pygame.draw.rect(SCREEN, "WHITE", (100, 100, 1000, 50))

@@ -55,5 +55,4 @@ def main():
     intro(SCREEN)
     menu_principal(SCREEN, configJuego, LvlsInfo, elementosFondo)
 
-if __name__ == "__main__":
-    main()
+main()
