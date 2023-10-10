@@ -7,6 +7,7 @@ reloj = pygame.time.Clock()
 def intro(SCREEN):
     pygame.display.set_caption("Lights Out")
     i = 1
+    muestra = 1
     while True:
         reloj.tick(40)
 
@@ -16,4 +17,8 @@ def intro(SCREEN):
         i += 1
 
         if i >= 62:
-            break
+            if muestra == 1:
+                i = 1
+                muestra = 2
+            else:
+                break

@@ -12,6 +12,7 @@ def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
     configJuego["Volumen"] /= 4
     pygame.mixer.music.set_volume(configJuego["Volumen"])
     SCREEN.blit(imgs["oscuro"], (0,0))
+    pygame.mixer.Sound.play(pygame.mixer.Sound("assets/sounds/pausar.ogg"))
 
     #cambiamos el titulo de la ventana
     pygame.display.set_caption(f'{idioma[configJuego["Idioma"]]["OpcionesLvl"]["Titulo"]} - {idioma[configJuego["Idioma"]]["Nivel1"]["Titulo"]}')
@@ -39,16 +40,19 @@ def opciones_juego(SCREEN , configJuego, LvlsInfo, elementosFondo):
                     configJuego["Volumen"] *= 4
                     pygame.mixer.music.set_volume(configJuego["Volumen"])
                     accion = "continuar"
+                    pygame.mixer.Sound.play(pygame.mixer.Sound("assets/sounds/despausar.mp3"))
                     return SCREEN , configJuego, LvlsInfo, elementosFondo, accion
                 if btnReiniciar.checkForInput(OPTIONS_MOUSE_POS): 
                     configJuego["Volumen"] *= 4
                     pygame.mixer.music.set_volume(configJuego["Volumen"])
                     accion = "reiniciar"
+                    pygame.mixer.Sound.play(pygame.mixer.Sound("assets/sounds/despausar.mp3"))
                     return SCREEN , configJuego, LvlsInfo, elementosFondo, accion 
                 if btnSalir.checkForInput(OPTIONS_MOUSE_POS): 
                     configJuego["Volumen"] *= 4
                     pygame.mixer.music.set_volume(configJuego["Volumen"])
                     accion = "salir"
+                    pygame.mixer.Sound.play(pygame.mixer.Sound("assets/sounds/despausar.mp3"))
                     return SCREEN , configJuego, LvlsInfo, elementosFondo , accion
                 
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()

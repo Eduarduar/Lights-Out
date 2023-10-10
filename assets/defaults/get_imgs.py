@@ -113,7 +113,6 @@ def imgs_lvl1(idioma):
     return imgs
 
 def imgs_lvl2():
-    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
     Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
     fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
     sombra_lvl1 = pygame.image.load("assets/img/lvl1/sombra_lvl1.png")
@@ -127,7 +126,6 @@ def imgs_lvl2():
     }
 
     imgs = {
-        "configIcon": ConfigIcon,
         "caja": Caja,
         "fondo": fondo,
         "sombra_lvl1": sombra_lvl1,
@@ -140,7 +138,6 @@ def imgs_lvl2():
     return imgs
 
 def imgs_lvl3():
-    ConfigIcon = pygame.transform.scale(pygame.image.load("assets/img/config icon.png"), (50, 50))
     Caja = pygame.transform.scale(pygame.image.load("assets/img/rect.png"), (550, 100))
     fondo = pygame.image.load("assets/img/lvl1/fondo_lvl1.png")
     sombra_lvl1 = pygame.image.load("assets/img/lvl1/sombra_lvl1.png")
@@ -153,7 +150,6 @@ def imgs_lvl3():
     }
 
     imgs = {
-        "configIcon": ConfigIcon,
         "caja": Caja,
         "fondo": fondo,
         "sombra_lvl1": sombra_lvl1,
@@ -181,6 +177,7 @@ def imgs_carga(personaje):
     img1 = pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje1.png")
     img2 = pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje2.png")
     img3 = pygame.image.load(f"assets/img/sprites/personajes/{personaje}/personaje3.png")
+    fondo = pygame.image.load("assets/backgrounds/carga.png")
     personaje = [img1, img2, img3]
     derecha = []
     for i in range(0,3):
@@ -189,7 +186,8 @@ def imgs_carga(personaje):
 
     imgs = {
         "derecha": derecha,
-        "quieto": img1
+        "quieto": img1,
+        "fondo": fondo
     }
 
     return imgs
@@ -197,7 +195,7 @@ def imgs_carga(personaje):
 def imgs_intro():
     imgs = []
     for i in range(1, 63):
-        imgs.append(pygame.image.load("./assets/img/intro/" + str(i) + ".png"))
+        imgs.append(pygame.image.load("./assets/img/intro/" + str(i) + ".png")) 
 
     return imgs
 
